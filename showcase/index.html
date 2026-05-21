@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGY Stock Research Brief Showcase</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Premium Palette & Variables */
+    :root {
+      --bg-dark: #070b15;
+      --bg-deep: #030509;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-hover-bg: rgba(255, 255, 255, 0.06);
+      --card-hover-border: rgba(255, 255, 255, 0.15);
+      
+      --accent-blue: #00d2ff;
+      --accent-blue-glow: rgba(0, 210, 255, 0.25);
+      --accent-gold: #ffbd59;
+      --accent-gold-glow: rgba(255, 189, 89, 0.25);
+      --accent-red: #ff7c7c;
+      --accent-red-glow: rgba(255, 124, 124, 0.25);
+      
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      
+      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 189, 89, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(7, 11, 21, 1) 0%, var(--bg-deep) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Sarabun', 'Inter', 'Outfit', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      padding: 8px 18px;
+      border-radius: 30px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 16px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: var(--accent-blue);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h1.main-title {
+      font-family: 'Outfit', 'Sarabun', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Search & Filter Controls */
+    .controls-wrapper {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--card-border);
+      padding: 14px 20px 14px 46px;
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: 'Sarabun', sans-serif;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 15px var(--accent-blue-glow);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+      width: 18px;
+      height: 18px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+
+    .filter-tab:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .filter-tab.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Cards Grid */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .brief-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .brief-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--badge-color, var(--accent-blue)), transparent);
+      opacity: 0.7;
+    }
+
+    .brief-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      background: var(--card-hover-bg);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.02);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-ticker-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-ticker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .card-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--badge-color, var(--accent-blue));
+    }
+
+    .card-date {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-family: 'Outfit', 'Sarabun', sans-serif;
+    }
+
+    .card-company-name {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: -6px;
+    }
+
+    .card-preview {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .read-more {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--badge-color, var(--accent-blue));
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .read-more svg {
+      width: 14px;
+      height: 14px;
+      transition: var(--transition-smooth);
+    }
+
+    .brief-card:hover .read-more svg {
+      transform: translateX(4px);
+    }
+
+    /* Detail View Overlay (Modal) */
+    .detail-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 5, 9, 0.85);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .detail-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .detail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      transform: translateY(30px) scale(0.98);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .detail-overlay.active .detail-container {
+      transform: translateY(0) scale(1);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--card-hover-border);
+      transform: rotate(90deg);
+    }
+
+    .detail-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+
+    .detail-ticker-badge {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #ffffff;
+      padding: 2px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      margin-bottom: 12px;
+    }
+
+    .detail-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Markdown Rendered Content Styling */
+    .rendered-content {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .rendered-content p {
+      margin-bottom: 18px;
+    }
+
+    .rendered-content h1, 
+    .rendered-content h2, 
+    .rendered-content h3 {
+      color: #ffffff;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      font-family: 'Outfit', 'Sarabun', sans-serif;
+    }
+
+    .rendered-content h1 {
+      font-size: 1.6rem;
+      border-left: 4px solid var(--detail-accent, var(--accent-blue));
+      padding-left: 12px;
+    }
+
+    .rendered-content h2 {
+      font-size: 1.4rem;
+      border-left: 3px solid var(--detail-accent, var(--accent-blue));
+      padding-left: 10px;
+    }
+
+    .rendered-content h3 {
+      font-size: 1.2rem;
+      color: var(--detail-accent, var(--accent-blue));
+      margin-top: 30px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .rendered-content ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+      list-style-type: none;
+    }
+
+    .rendered-content li {
+      position: relative;
+      margin-bottom: 10px;
+      padding-left: 16px;
+      color: var(--text-muted);
+    }
+
+    .rendered-content li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--detail-accent, var(--accent-blue));
+      font-weight: bold;
+    }
+
+    .rendered-content strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .rendered-content hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      margin: 30px 0;
+    }
+
+    .rendered-content blockquote {
+      border-left: 4px solid var(--accent-gold);
+      background: rgba(255, 189, 89, 0.03);
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* Premium Alert Box Customization */
+    .rendered-content .alert-box {
+      margin: 24px 0;
+      padding: 18px 22px;
+      border-radius: 14px;
+      border-left: 4px solid var(--accent-blue);
+      background: rgba(0, 210, 255, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rendered-content .alert-box.warning {
+      border-left-color: var(--accent-gold);
+      background: rgba(255, 189, 89, 0.02);
+    }
+
+    .rendered-content .alert-box-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rendered-content .alert-box-content {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .glow-link {
+      color: var(--detail-accent, var(--accent-blue));
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      border-bottom: 1px dashed var(--detail-accent, var(--accent-blue));
+      padding-bottom: 1px;
+    }
+
+    .glow-link:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Empty state */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-dim);
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px dashed var(--card-border);
+      border-radius: 18px;
+    }
+
+    /* Animation effects */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .grid-container > div {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 15px;
+      }
+      h1.main-title {
+        font-size: 1.8rem;
+      }
+      .detail-container {
+        padding: 24px;
+      }
+      .close-btn {
+        top: 16px;
+        right: 16px;
+        width: 38px;
+        height: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <header>
+      <div class="logo-container">ANTIGRAVITY SYSTEMS</div>
+      <h1 class="main-title">Brief Portfolio Gallery</h1>
+      <p class="subtitle">คลังสรุปข้อมูลและบทวิเคราะห์เชิงลึกของหุ้นระดับโลก จากเอกสารชั้นต้นและพนักงานวิเคราะห์อัจฉริยะแบบคู่ขนาน</p>
+    </header>
+
+    <div class="controls-wrapper">
+      <div class="search-container">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาหุ้นด้วย Ticker, ชื่อบริษัท หรือเนื้อหาโปรย...">
+      </div>
+      
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">แสดงทั้งหมด</button>
+        <button class="filter-tab" data-filter="latest">บทวิเคราะห์ล่าสุด (Active)</button>
+        <button class="filter-tab" data-filter="archived">คลังเอกสารเก่า (Archives)</button>
+      </div>
+    </div>
+
+    <div class="grid-container" id="briefsGrid">
+      <!-- Grid items will be generated by JavaScript -->
+    </div>
+
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="detail-overlay" id="detailOverlay">
+    <div class="detail-container" id="detailContainer">
+      <button class="close-btn" id="closeBtn" aria-label="Close details">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="detail-header">
+        <div class="detail-ticker-badge" id="detailTicker">AAPL</div>
+        <h2 class="detail-title" id="detailTitle">Apple Inc.</h2>
+        <div class="detail-meta">
+          <span id="detailVersion">เวอร์ชัน: v4</span>
+          <span>•</span>
+          <span id="detailDate">แก้ไขล่าสุด: 2026-05-21</span>
+        </div>
+      </div>
+      
+      <div class="rendered-content" id="detailContent">
+        <!-- Rendered markdown html will go here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Section -->
+  <script>
+    // Embedded JSON Data directly
+    const briefsData = [
+      {
+        ticker: "MSFT",
+        companyName: "Microsoft Corporation",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#00a4ef",
+        snapshot: "Microsoft Corporation เป็นผู้พัฒนาซอฟต์แวร์ คลาวด์คอมพิวติ้ง (Azure) บริการสำนักงานอัจฉริยะ (Office 365) และระบบปัญญาประดิษฐ์ระดับแนวหน้าของโลก โดยมีฐานลูกค้าครอบคลุมทั้งกลุ่มองค์กรขนาดใหญ่ ภาคธุรกิจขนาดเล็ก และผู้บริโภคทั่วไปทั่วโลก โครงสร้างรายได้หลักขับเคลื่อนด้วยส่วนงานคลาวด์...",
+        markdown: `# Microsoft Corporation (MSFT) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Microsoft Corporation เป็นผู้พัฒนาซอฟต์แวร์ คลาวด์คอมพิวติ้ง (Azure) บริการสำนักงานอัจฉริยะ (Office 365) และระบบปัญญาประดิษฐ์ระดับแนวหน้าของโลก โดยมีฐานลูกค้าครอบคลุมทั้งกลุ่มองค์กรขนาดใหญ่ ภาคธุรกิจขนาดเล็ก และผู้บริโภคทั่วไปทั่วโลก โครงสร้างรายได้หลักขับเคลื่อนด้วยส่วนงานคลาวด์อัจฉริยะและการบริการซอฟต์แวร์ประสิทธิภาพสูงอย่างเหนียวแน่น
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตเร่งตัวอย่างต่อเนื่องด้วยพลังสนับสนุนจากความสามารถของคลาวด์ Azure และการผนวกรวมฟีเจอร์ Copilot (AI) เข้ากับชุดโปรแกรมสำนักงานดั้งเดิม ช่วยยกระดับประสิทธิภาพความสม่ำเสมอของรายรับ
+- **อัตรากำไร (Margin trend):** อัตรากำไรขั้นต้นทรงตัวในระดับสูงมากโดยเฉลี่ยประมาณ 68-70% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากความได้เปรียบทางด้านขนาดของโครงสร้างพื้นฐานคลาวด์และสัดส่วนรายได้ซอฟต์แวร์ลิขสิทธิ์ที่มีต้นทุนผันแปรต่ำ
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะทางการเงินที่แข็งแกร่งเป็นเลิศ มีกระแสเงินสดและสินทรัพย์สภาพคล่องมูลค่ามหาศาลเพียบพร้อมสำหรับการลงทุนโครงสร้างพื้นฐานขนาดยักษ์และการจ่ายเงินปันผลสม่ำเสมอ
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการลงทุนเชิงรุกในขีดความสามารถ AI และคลาวด์สม่ำเสมอ พร้อมกับตอบแทนผู้ถือหุ้นผ่านโครงการซื้อหุ้นคืนและเงินปันผลที่ขยายตัวสม่ำเสมอตามแนวคิดลงทุนระยะยาว
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Switching Costs ที่สูงยิ่งยวด:** ชุดระบบปฏิบัติการ Windows และ Microsoft 365 ถือเป็นมาตรฐานหลักของธุรกิจทั่วโลก การเปลี่ยนระบบย้ายค่ายทำได้ยากและสร้างความเสี่ยงสูงต่อความต่อเนื่องในการดำเนินงาน
+- **คลาวด์ Azure & AI Monopoly (Network Economies & Scale Economies):** การเป็นพันธมิตรพิเศษกับ OpenAI และนวัตกรรม Azure AI Infrastructure ดึงดูดปริมาณงานประมวลผลขนาดใหญ่เข้ามาในระบบนิเวศอย่างมั่นคง
+
+**Bear case (มุมมองลบ):**
+- **อัตราผลตอบแทนจากการลงทุน CapEx ขนาดใหญ่:** ความต้องการขยายสถานีดาต้าเซ็นเตอร์และฮาร์ดแวร์ AI ทั่วโลกส่งผลให้บริษัทต้องใช้งบลงทุนสูงมาก หากการสร้างรายรับจาก AI ชะลอตัวลงอาจกระทบต่ออัตรากำไรระยะสั้น
+- **แรงกดดันด้านกฎหมายคุมการค้าผูกขาด:** ด้วยอิทธิพลและสเกลขนาดมหึมาทำให้มักถูกตรวจสอบเข้มงวดจากหน่วยงานภาครัฐในเรื่องความยุติธรรมทางการแข่งขัน
+
+### 5. Kill conditions
+- อัตราการขยายตัวของรายได้คลาวด์อัจฉริยะ Azure ลดลงต่อเนื่องต่ำกว่า 15% เป็นเวลาเกิน 3 ไตรมาส บ่งชี้การสูญเสียส่วนแบ่งตลาดให้คู่แข่ง
+- เกิดเหตุการณ์ความปลอดภัยคลาวด์บกพร่องระดับมหันตภัย (Major Security Breach) ที่ทำลายความเชื่อมั่นของกลุ่มลูกค้าระดับรัฐบาลหรือองค์กรขนาดยักษ์อย่างกู้คืนไม่ได้
+
+### 6. What to ask before owning it
+- การสร้างรายได้เพิ่ม (Monetization) จากระบบ AI และ Copilot จะรักษาระดับอัตราการเติบโตในระยะยาวให้ชดเชยค่าเสื่อมราคาของงบ CapEx ที่สูงได้ดีเพียงใด?
+- ความตึงเครียดทางภูมิรัฐศาสตร์จะมีผลต่อห่วงโซ่อุปทานฮาร์ดแวร์เซิร์ฟเวอร์และความมั่นคงปลอดภัยทางไซเบอร์ของ Azure ในแต่ละภูมิภาคอย่างไร?
+`
+      },
+      {
+        ticker: "GOOGL",
+        companyName: "Alphabet Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#4285f4",
+        snapshot: "Alphabet Inc. เป็นผู้นำระดับโลกด้านเทคโนโลยีการค้นหาและการโฆษณาดิจิทัล โดยมีแพลตฟอร์มระดับไอคอนที่มีผู้ใช้งานหลักพันล้านคน เช่น Google Search, YouTube, Android, Google Maps และ Chrome นอกจากนี้ยังมีบริการคลาวด์อัจฉริยะ Google Cloud โครงสร้างรายได้หลักยังคงมาจากการยิงโฆษณาตามเป้าห...",
+        markdown: `# Alphabet Inc. (GOOGL) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Alphabet Inc. เป็นผู้นำระดับโลกด้านเทคโนโลยีการค้นหาและการโฆษณาดิจิทัล โดยมีแพลตฟอร์มระดับไอคอนที่มีผู้ใช้งานหลักพันล้านคน เช่น Google Search, YouTube, Android, Google Maps และ Chrome นอกจากนี้ยังมีบริการคลาวด์อัจฉริยะ Google Cloud โครงสร้างรายได้หลักยังคงมาจากการยิงโฆษณาตามเป้าหมายและการบริการพื้นที่คลาวด์
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตมั่นคงสม่ำเสมอตามทิศทางการใช้จ่ายงบโฆษณาดิจิทัลทั่วโลก โดยมีส่วนงานคลาวด์ Google Cloud Platform (GCP) ช่วยทำหน้าที่เป็นเครื่องยนต์ตัวที่สองสร้างรายได้แบบเกิดซ้ำ
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรจากการดำเนินงานที่แข็งแกร่งประมาณ 25-28% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบโครงข่ายเซิร์ฟเวอร์และโครงสร้างพื้นฐานโฆษณาที่สร้างผลตอบแทนสูงสุดต่อขนาดการใช้งาน
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะการเงินสุทธิที่ปลอดภัยสูงสุด มีเงินสดสำรองปริมาณล้นเหลือและมีหนี้สินทางการเงินต่ำมาก พร้อมรองรับการทำวิจัยเทคโนโลยีสุดล้ำรอบด้าน
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งกระจายเงินลงทุนเข้าสู่งานประมวลผล AI ขั้นสูง และล่าสุดเพิ่งริเริ่มนโยบายซื้อหุ้นคืนพร้อมเงินปันผลเป็นครั้งแรกเพื่อแสดงความใส่ใจต่อผลตอบแทนผู้ถือหุ้นคุณค่า
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Network Economies & Search Monopoly:** พลังขับเคลื่อนเครือข่ายของ Google Search ที่ผสานเข้ากับพฤติกรรมผู้คนทั่วโลก ทำให้ยากที่คู่แข่งจะแย่งชิงส่วนแบ่งตลาดค้นหาข้อมูลไปได้อย่างง่ายดาย
+- **YouTube & Digital Ad Dominance (Scale Economies):** พอร์ตโฟลิโอที่เป็นหนึ่งเดียวในระบบโฆษณาทำให้ดึงดูดทั้งนักสร้างเนื้อหาและเม็ดเงินโฆษณาอย่างล้นหลาม เกิดเอฟเฟกต์ประหยัดต่อขนาดที่ได้เปรียบคู่แข่งเด่นชัด
+
+**Bear case (มุมมองลบ):**
+- **ความเสี่ยงต่อโมเดลค้นหาแบบดั้งเดิม:** การเกิดขึ้นของอินเทอร์เฟซค้นหาผ่าน AI หรือแชทบอทอัจฉริยะ อาจเปลี่ยนพฤติกรรมผู้บริโภคและลดจำนวนครั้งในการเข้าถึงโฆษณารูปแบบเดิม
+- **คดีความต่อต้านการผูกขาด:** การถูกฟ้องร้องจากรัฐบาลหลายประเทศเรื่องข้อตกลงติดตั้งระบบค้นหาหลักและการผูกขาดเทคโนโลยีการยิงโฆษณาเป็นปัจจัยเสี่ยงเชิงโครงสร้างถาวร
+
+### 5. Kill conditions
+- ส่วนแบ่งทางการตลาดของบริการ Google Search ทั่วโลกปรับตัวลดต่ำกว่า 80% เป็นระยะเวลาติดต่อกันนานกว่า 2 ไตรมาส
+- คำสั่งศาลสิ้นสุดระบุให้มีการแยกส่วนโครงสร้างหรือบังคับยกเลิกค่าลิขสิทธิ์การติดตั้งเริ่มต้น (Default agreements) ในอุปกรณ์เคลื่อนที่ระบบ Android ทั่วโลก
+
+### 6. What to ask before owning it
+- โมเดลการประมวลผลค้นหาข้อมูลอัจฉริยะ (AI Search) จะสามารถสร้างสัดส่วนการทำกำไร (Margin) ได้ใกล้เคียงกับการค้นหาข้อมูลหน้าเว็บแบบเดิมที่มีแบนเนอร์โฆษณาหรือไม่?
+- ศักยภาพของ Google Cloud จะสามารถเร่งความเร็วในการแข่งขันเพื่อชิงเค้กส่วนแบ่งตลาดกับผู้นำด้านคลาวด์รายอื่นได้ดีเพียงใด?
+`
+      },
+      {
+        ticker: "AMZN",
+        companyName: "Amazon.com, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#ff9900",
+        snapshot: "Amazon.com, Inc. เป็นยักษ์ใหญ่ด้านอีคอมเมิร์ซและการบริการเทคโนโลยีคลาวด์ (AWS) ระดับโลก โดยดำเนินงานเชื่อมโยงผู้ซื้อ ผู้ขาย และผู้ให้บริการขนส่งด้วยระบบโลจิสติกส์ที่ใหญ่ที่สุดในโลก โครงสร้างรายรับสำคัญถูกขับเคลื่อนด้วยงานค้าปลีกออนไลน์และงานบริการโครงสร้างพื้นฐานคลาวด์ที่มีอัตราก...",
+        markdown: `# Amazon.com, Inc. (AMZN) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Amazon.com, Inc. เป็นยักษ์ใหญ่ด้านอีคอมเมิร์ซและการบริการเทคโนโลยีคลาวด์ (AWS) ระดับโลก โดยดำเนินงานเชื่อมโยงผู้ซื้อ ผู้ขาย และผู้ให้บริการขนส่งด้วยระบบโลจิสติกส์ที่ใหญ่ที่สุดในโลก โครงสร้างรายรับสำคัญถูกขับเคลื่อนด้วยงานค้าปลีกออนไลน์และงานบริการโครงสร้างพื้นฐานคลาวด์ที่มีอัตราการทำกำไรขั้นต้นระดับยอดเยี่ยม
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตต่อเนื่องสม่ำเสมอนำโดยพลังของการเปลี่ยนผ่านเข้าสู่ยุคดิจิทัล โดยมีส่วนงาน AWS และส่วนโฆษณาในมาร์เก็ตเพลสช่วยสร้างฐานรายรับความหนาแน่นสูง
+- **อัตรากำไร (Margin trend):** ภาพรวมกำไรขั้นต้นขยายตัวดีขึ้นจากการปรับกระบวนการทำงานด้านขนส่งและสัดส่วนบริการ AWS ที่มีมาร์จิ้นสูงขยับเพิ่มขึ้น (ตัวเลข ตรวจสอบใน 10-K ล่าสุด)
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะทางการเงินแข็งแกร่ง มีกระแสเงินสดจากการดำเนินงานจำนวนมหาศาล แม้จะมีงบลงทุน CapEx ที่สูงมากแต่สามารถบริหารจัดการหนี้สินระยะยาวได้อย่างสมบูรณ์
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งส่งมอบกระแสเงินสดอิสระกลับไปอัดฉีดการขยายเครือข่ายโลจิสติกส์และติดตั้งชิปประมวลผลเพื่อพัฒนาคลาวด์อัจฉริยะ AWS เป็นสำคัญ
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Scale Economies & Logistics Moat:** การลงทุนในคลังสินค้าและระบบขนส่งครอบคลุมทั่วโลกสร้างขีดความสามารถการบริการจัดส่งรวดเร็วพิเศษที่ไม่มีคู่แข่งรายใดเลียนแบบได้ใกล้เคียง
+- **AWS High-Margin Engine (Process Power & Switching Costs):** ส่วนบริการคลาวด์ AWS ทำหน้าที่เป็นเสาค้ำจุนกำไรหลักให้แก่บริษัท โดยเป็นรากฐานของซอฟต์แวร์และแอปพลิเคชันทั่วโลก
+
+**Bear case (มุมมองลบ):**
+- **สภาวะแรงงานและต้นทุนดำเนินงาน:** การพึ่งพิงพนักงานฝ่ายคลังสินค้าและการจัดส่งปริมาณมาก ทำให้มีความอ่อนไหวต่อข้อเรียกร้องด้านสวัสดิการและอัตราค่าจ้างขั้นต่ำ
+- **การแข่งขันในตลาดบริการคลาวด์ระดับโลก:** การแข่งขันด้านราคาและเทคโนโลยีประมวลผล AI กับ Microsoft และ Google ทวีความรุนแรงยิ่งขึ้น
+
+### 5. Kill conditions
+- อัตรากำไรจากการดำเนินงาน (Operating Margin) ของธุรกิจคลาวด์ AWS ลดลงต่ำกว่าระดับ 20% ติดต่อกัน 2 ไตรมาส
+- การเติบโตของส่วนงานสินค้าอีคอมเมิร์ซในตลาดหลักหดตัวลงอย่างถาวรเนื่องจากการสูญเสียความนิยมในแบรนด์สมาชิก Amazon Prime
+
+### 6. What to ask before owning it
+- ความคุ้มค่าและขีดจำกัดความสามารถของเทคโนโลยีคลาวด์ AWS ในการพัฒนาชิปคัสตอม AI ของตนเองจะช่วยรักษามาร์จิ้นการทำกำไรไว้ได้ดีเพียงใด?
+- ความพยายามในการเพิ่มประสิทธิภาพของระบบจัดส่งสินค้าอัตโนมัติด้วยหุ่นยนต์จะช่วยชดเชยผลกระทบของสภาวะเงินเฟ้อและค่าจ้างแรงงานได้เร็วแค่ไหน?
+`
+      },
+      {
+        ticker: "META",
+        companyName: "Meta Platforms, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#0081fb",
+        snapshot: "Meta Platforms, Inc. เป็นผู้บุกเบิกและเจ้าของโครงข่ายสังคมออนไลน์ที่ใหญ่ที่สุดในโลก เช่น Facebook, Instagram, WhatsApp และ Messenger มีผู้คนแวะเวียนเข้ามาใช้งานเป็นประจำทุกวัน โครงสร้างรายได้เกือบทั้งหมดมาจากการโฆษณาดิจิทัลที่มีความแม่นยำสูงด้วยระบบปัญญาประดิษฐ์และฐานข้อมูลพฤทีพร...",
+        markdown: `# Meta Platforms, Inc. (META) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Meta Platforms, Inc. เป็นผู้บุกเบิกและเจ้าของโครงข่ายสังคมออนไลน์ที่ใหญ่ที่สุดในโลก เช่น Facebook, Instagram, WhatsApp และ Messenger มีผู้คนแวะเวียนเข้ามาใช้งานเป็นประจำทุกวัน โครงสร้างรายได้เกือบทั้งหมดมาจากการโฆษณาดิจิทัลที่มีความแม่นยำสูงด้วยระบบปัญญาประดิษฐ์และฐานข้อมูลพฤทีพรรมผู้บริโภคขนาดมหึมา
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** ฟื้นตัวและเติบโตอย่างร้อนแรง นำโดยความต้องการยิงโฆษณาบนวิดีโอสั้น (Reels) และประสิทธิภาพของเครื่องมือระบุเป้าหมาย AI อัตโนมัติที่ยอดเยี่ยม
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นเฉลี่ยสูงกว่า 80% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบแพลตฟอร์มซอฟต์แวร์ที่มีต้นทุนการให้บริการต่อรายหัวต่ำเป็นพิเศษ
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** งบดุลแข็งแกร่งอย่างยิ่ง ปราศจากหนี้สินระยะยาวที่มีนัยสำคัญ และมีกระแสเงินสดอิสระปริมาณมหาศาลพร้อมลงทุนพัฒนาเทคโนโลยี AI และโลกเสมือนจริง
+- **การจัดสรรเงินทุน (Capital allocation):** เน้นการซื้อหุ้นคืนมูลค่ามหาศาล และเริ่มจ่ายเงินปันผลสม่ำเสมอ ควบคู่กับการควบคุมงบประมาณค่าใช้จ่ายส่วนงานวิจัย Reality Labs เพื่อเพิ่มความคุ้มค่าสูงสุด
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Network Economies & Global Family of Apps:** การมีผู้ใช้งานระบบเกือบครึ่งหนึ่งของประชากรโลกทำให้เกิดเอฟเฟกต์เครือข่ายที่เหนียวแน่น ผู้ใช้ใหม่จำเป็นต้องเข้ามาร่วมใช้งานเพื่อเชื่อมต่อกับสังคมเดิม
+- **AI-Powered Ad Supremacy (Process Power & Scale Economies):** ระบบ AI แนะนำเนื้อหาอัจฉริยะช่วยเพิ่มระยะเวลาการใช้งานของผู้ใช้และเพิ่มประสิทธิภาพการทำกำไรจากการยิงโฆษณาให้มีผลตอบแทนการลงทุนสูงสุดสำหรับร้านค้า
+
+**Bear case (มุมมองลบ):**
+- **ความเสี่ยงจากการพึ่งพาแพลตฟอร์มระบบปฏิบัติการ:** การปรับเปลี่ยนสิทธิ์ความส่วนตัวของผู้ใช้บนระบบ iOS หรือ Android สามารถจำกัดความสามารถการติดตามข้อมูลพฤติกรรมและกดดันประสิทธิภาพโฆษณา
+- **การลงทุนมหาศาลใน Reality Labs:** การทุ่มงบประมาณและเวลาพัฒนาโลกเสมือนจริงและแว่นตาอัจฉริยะยาวนานหลายปีโดยยังไม่เห็นจุดคุ้มทุนที่ชัดเจน
+
+### 5. Kill conditions
+- จำนวนผู้ใช้งานรายวัน (Daily Active Users) ของแอปในตระกูล Meta ทั่วโลกหดตัวลดลงติดต่อกันเกิน 2 ไตรมาส
+- อัตรากำไรขั้นต้นจากการดำเนินงานหลัก (Operating Margin) ปรับตัวลงต่ำกว่า 25% เนื่องจากงบวิจัยเทคโนโลยี AI และโลกเสมือนขยายตัวอย่างไร้ขอบเขต
+
+### 6. What to ask before owning it
+- ความสำเร็จของแว่นตาอัจฉริยะ (Smart Glasses) และการผนวกรวม AI ผู้ช่วยจะช่วยเปลี่ยนผ่านบริษัทให้กลายเป็นผู้นำแพลตฟอร์มฮาร์ดแวร์ยุคใหม่ได้จริงหรือไม่?
+- กฎระเบียบด้านความเป็นส่วนตัวและการคุ้มครองเยาวชนทั่วโลกจะบีบบังคับให้รูปแบบการโฆษณาของ Meta ต้องปรับลดอัตราค่าบริการลงเพียงใด?
+`
+      },
+      {
+        ticker: "NVDA",
+        companyName: "NVIDIA Corporation",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#76b900",
+        snapshot: "NVIDIA Corporation เป็นผู้นำระดับโลกด้านชิปประมวลผลกราฟิก (GPU) และซอฟต์แวร์โครงข่ายสำหรับการคำนวณความเร็วสูงและการประมวลผลปัญญาประดิษฐ์ (AI) โดยจำหน่ายสินค้าให้แก่ผู้ให้บริการระบบคลาวด์ยักษ์ใหญ่ สถาบันวิจัย และกลุ่มนักพัฒนาทั่วโลก โครงสร้างรายได้หลักกว่า 80% มาจากส่วนงานดาต้าเซ็...",
+        markdown: `# NVIDIA Corporation (NVDA) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+NVIDIA Corporation เป็นผู้นำระดับโลกด้านชิปประมวลผลกราฟิก (GPU) และซอฟต์แวร์โครงข่ายสำหรับการคำนวณความเร็วสูงและการประมวลผลปัญญาประดิษฐ์ (AI) โดยจำหน่ายสินค้าให้แก่ผู้ให้บริการระบบคลาวด์ยักษ์ใหญ่ สถาบันวิจัย และกลุ่มนักพัฒนาทั่วโลก โครงสร้างรายได้หลักกว่า 80% มาจากส่วนงานดาต้าเซ็นเตอร์ประสิทธิภาพสูง
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตแบบก้าวกระโดดอย่างไม่เคยมีปรากฏมาก่อน นำโดยกระแสความต้องการชิป AI สำหรับโมเดลภาษาขนาดใหญ่และการฝึกฝนระบบประมวลผลทั่วโลก
+- **อัตรากำไร (Margin trend):** ขยายตัวแตะระดับอัตรากำไรขั้นต้นกว่า 75% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) บ่งชี้อำนาจในการกำหนดราคาขั้นสูงจากความล้ำหน้าทางเทคโนโลยีและระบบนิเวศ CUDA
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะทางการเงินและสภาพคล่องอยู่ในระดับยอดเยี่ยมสูงสุด กระแสเงินสดจากการดำเนินงานพุ่งทะยานสอดรับกับยอดขายที่ร้อนแรง
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งลงทุนพัฒนาสถาปัตยกรรมชิปรุ่นใหม่ปีต่อปี พร้อมส่งมอบเงินคืนแก่ผู้ถือหุ้นผ่านการซื้อหุ้นคืนขนาดใหญ่เนื่องจากกระแสเงินสดล้นเหลือ
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Switching Costs จากระบบนิเวศ CUDA:** ซอฟต์แวร์ CUDA ที่นักพัฒนา AI ทั่วโลกคุ้นเคยและเขียนรหัสคำสั่งผูกติดอยู่บนฮาร์ดแวร์ของ NVIDIA ถือเป็นค่ายกลสำคัญที่ทำลายโอกาสของคู่แข่งชิปอื่น
+- **Process Power & Technology Dominance (Branding & Cornered Resource):** ขีดความสามารถในการวิจัยและออกผลิตภัณฑ์ชิปรุ่นใหม่ (เช่น Hopper, Blackwell) ที่มีความแรงเหนือกว่าตลาดสม่ำเสมอสร้างข้อได้เปรียบที่ห่างชั้น
+
+**Bear case (มุมมองลบ):**
+- **วัฏจักรและความเสี่ยงของการอิ่มตัว:** ธุรกิจฮาร์ดแวร์ยังคงมีรอบธรรมชาติของวัฏจักร หากลูกค้ารายใหญ่สร้างดาต้าเซ็นเตอร์เสร็จสมบูรณ์ ยอดสั่งซื้อใหม่อาจชะลอตัวลงกะทันหัน
+- **ความเสี่ยงเชิงภูมิรัฐศาสตร์และการส่งออก:** มาตรการคุมเข้มการค้าด้านเซมิคอนดักเตอร์ขั้นสูงกับประเทศจีนอาจปิดกั้นช่องทางการสร้างรายได้ในเอเชียอย่างถาวร
+
+### 5. Kill conditions
+- อัตรากำไรขั้นต้น (Gross Margin) ปรับลดลงต่อเนื่องต่ำกว่าระดับ 60% บ่งบอกการสูญเสียอำนาจการผูกขาดและการแข่งขันตัดราคาที่รุนแรง
+- เกิดการเปลี่ยนผ่านครั้งใหญ่ของอุตสาหกรรมที่หันไปใช้แพลตฟอร์มซอฟต์แวร์แบบเปิด (Open-source) แทนระบบปิดอย่าง CUDA สำเร็จ
+
+### 6. What to ask before owning it
+- ความคุ้มค่าและกำลังการผลิตของโรงงานรับจ้างผลิต (เช่น TSMC) จะเพียงพอต่อการรักษากำหนดการส่งมอบชิปรุ่นใหม่โดยไม่เกิดปัญหาคอขวดในห่วงโซ่อุปทานหรือไม่?
+- ความพยายามในการออกแบบชิปประมวลผล AI ของตนเองโดยยักษ์ใหญ่คลาวด์ (เช่น Google, Microsoft, Amazon) จะกระทบต่อยอดขายระยะยาวของ NVIDIA มากน้อยเพียงใด?
+`
+      },
+      {
+        ticker: "ASML",
+        companyName: "ASML Holding N.V.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#00a1e0",
+        snapshot: "ASML Holding N.V. เป็นผู้ผลิตเครื่องจักรสำหรับสลักลวดลายบนชิปเซมิคอนดักเตอร์ด้วยเทคโนโลยีแสงล้ำยุค (Lithography) จากเนเธอร์แลนด์ โดยครองความเป็นเจ้าตลาดเทคโนโลยี EUV (Extreme Ultraviolet) รายเดียวในโลก กลุ่มลูกค้าหลักคือโรงงานผลิตชิปขั้นสูง เช่น TSMC, Intel และ Samsung",
+        markdown: `# ASML Holding N.V. (ASML) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+ASML Holding N.V. เป็นผู้ผลิตเครื่องจักรสำหรับสลักลวดลายบนชิปเซมิคอนดักเตอร์ด้วยเทคโนโลยีแสงล้ำยุค (Lithography) จากเนเธอร์แลนด์ โดยครองความเป็นเจ้าตลาดเทคโนโลยี EUV (Extreme Ultraviolet) รายเดียวในโลก กลุ่มลูกค้าหลักคือโรงงานผลิตชิปขั้นสูง เช่น TSMC, Intel และ Samsung
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตตามแนวโน้มความต้องการใช้ชิปขั้นสูงทั่วโลกและการสร้างโรงงานเซมิคอนดักเตอร์ใหม่ในอเมริกา ยุโรป และเอเชียเพื่อความมั่นคงทางเทคโนโลยี
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นที่มั่นคงในระดับ 50-53% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากโครงสร้างธุรกิจที่เกือบจะผูกขาดร้อยเปอร์เซ็นต์ในเครื่องจักรระดับไฮเอนด์
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีความแข็งแกร่งทางการเงินอย่างยอดเยี่ยม มีหนี้สินต่ำและรักษกระแสเงินสดที่เพียงพอต่อการทำวิจัยและพัฒนาระบบฟิสิกส์เลนส์ที่มีความซับซ้อนสูง
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งส่งเสริมงบวิจัยและพัฒนาเครื่องรุ่นใหม่เพื่อรักษาผู้นำเทคโนโลยีอย่างไม่หยุดยั้ง ควบคู่ไปกับนโยบายจ่ายเงินปันผลและซื้อหุ้นคืนอย่างต่อเนื่อง
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Cornered Resource & Process Power:** สิทธิบัตร เทคโนโลยีฟิสิกส์ชั้นสูง และความซับซ้อนของซัพพลายเชนชิ้นส่วนเครื่องจักร EUV ทำให้ไม่มีบริษัทอื่นใดในโลกสามารถลอกเลียนแบบเครื่องจักรนี้ได้ชั่วอายุคน
+- **ความต้องการผลิตชิปขั้นสูงที่ถาวร (Scale Economies & High Switching Costs):** ไม่ว่าชิป AI จะถูกออกแบบโดยบริษัทใด สุดท้ายก็ต้องถูกสลักลวดลายผ่านเครื่องจักรของ ASML เพื่อนำไปผลิตจริงเสมอ
+
+**Bear case (มุมมองลบ):**
+- **ข้อจำกัดและข้อขัดแย้งทางการเมืองระหว่างประเทศ:** กฎเกณฑ์ข้อจำกัดการส่งออกเครื่องจักร EUV หรือ DUV ขั้นสูงไปยังตลาดประเทศจีน กดดันเพดานการเติบโตของรายได้หลักอย่างเลี่ยงไม่ได้
+- **ความเสี่ยงในการส่งมอบและกระจุกตัวของยอดขาย:** เครื่องจักรแต่ละเครื่องมีมูลค่าหลายร้อยล้านดอลลาร์ การเลื่อนกำหนดการรับมอบของลูกค้ารายใหญ่เพียงรายเดียวสามารถสะเทือนงบการเงินไตรมาสนั้น ๆ ทันที
+
+### 5. Kill conditions
+- มีเทคโนโลยีทดแทนใหม่ในการผลิตเซมิคอนดักเตอร์โดยไม่ต้องใช้กระบวนการแสงสลักลวดลาย (Lithography) และได้รับการยอมรับในเชิงพาณิชย์
+- อัตรากำไรขั้นต้นรวมของบริษัทลดลงต่อเนื่องต่ำกว่า 45% เนื่องจากต้นทุนวัสดุและการผลิตของระบบซัพพลายเชนซับซ้อนมีการติดขัดอย่างถาวร
+
+### 6. What to ask before owning it
+- เครื่องจักร High-NA EUV รุ่นล่าสุดจะได้รับความนิยมและสร้างผลตอบแทนความคุ้มค่าแก่อัตรากำไรของบริษัทตามแผนงานที่วางไว้หรือไม่?
+- ความพยายามในการวิจัยเทคโนโลยีสลักลายชิปในจีนจะสามารถก้าวขึ้นมาเป็นภัยคุกคามสิทธิบัตรการผูกขาดของ ASML ได้เร็วแค่ไหน?
+`
+      },
+      {
+        ticker: "TSM",
+        companyName: "Taiwan Semiconductor Manufacturing Company Limited",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#ed1c24",
+        snapshot: "Taiwan Semiconductor Manufacturing Company Limited (TSMC) เป็นผู้รับจ้างผลิตชิปเซมิคอนดักเตอร์ (Foundry) ที่ใหญ่ที่สุดในโลกจากไต้หวัน ให้บริการผลิตชิปโครงสร้างประมวลผลขั้นสูง (เช่น 3 นาโนเมตร, 2 นาโนเมตร) ให้แก่ลูกค้าชั้นนำทั่วโลก อาทิ Apple, NVIDIA และ AMD",
+        markdown: `# Taiwan Semiconductor Manufacturing Company Limited (TSM) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Taiwan Semiconductor Manufacturing Company Limited (TSMC) เป็นผู้รับจ้างผลิตชิปเซมิคอนดักเตอร์ (Foundry) ที่ใหญ่ที่สุดในโลกจากไต้หวัน ให้บริการผลิตชิปโครงสร้างประมวลผลขั้นสูง (เช่น 3 นาโนเมตร, 2 นาโนเมตร) ให้แก่ลูกค้าชั้นนำทั่วโลก อาทิ Apple, NVIDIA และ AMD
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** ขยายตัวอย่างแข็งแกร่งตามปริมาณความต้องการใช้ชิป AI สมาร์ทโฟน และยานยนต์อัจฉริยะ โดยรักษาส่วนแบ่งทางการตลาดรับจ้างผลิตรวมกว่า 60% ของโลก
+- **อัตรากำไร (Margin trend):** สามารถรักษาอัตรากำไรขั้นต้นเฉลี่ยที่น่าทึ่งในระดับสูงกว่า 53% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) สะท้อนถึงประสิทธิภาพการผลิตที่เหนือกว่าคู่แข่งทุกรายอย่างมีนัยสำคัญ
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะการเงินที่มั่นคงสูงสุด มีความสามารถในการจัดหางบลงทุนอสังหาริมทรัพย์และเครื่องจักร (CapEx) ระดับหมื่นล้านดอลลาร์ในแต่ละปีโดยไม่สั่นคลอนความเสถียร
+- **การจัดสรรเงินทุน (Capital allocation):** เน้นการลงทุนพัฒนาโรงงานระดับนาโนเทคโนโลยีขั้นสูงและกระจายการจัดตั้งโรงงานไปยังต่างแดนเพื่อความปลอดภัยทางยุทธศาสตร์ โดยยังจ่ายปันผลสม่ำเสมอ
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Process Power & Technology Supremacy:** ความเชี่ยวชาญสูงสุดในกระบวนการผลิต (Yield rate สูงลิ่ว) และการพัฒนาเทคโนโลยีระดับนาโนเมตรที่ทิ้งห่างคู่แข่ง ทำให้ได้รับความไว้วางใจผูกขาดออร์เดอร์หลักทั้งหมด
+- **Switching Costs ที่ฝังแน่น (Scale Economies):** ลูกค้าต้องร่วมมือออกแบบการจัดเรียงแผงวงจร (IP integration) ร่วมกับวิศวกรของ TSMC ตั้งแต่ระยะเริ่มต้น ทำให้การเปลี่ยนค่ายผลิตมีภาระค่าใช้จ่ายและเวลาที่สูงมาก
+
+**Bear case (มุมมองลบ):**
+- **ความเสี่ยงทางภูมิรัฐศาสตร์ขั้นรุนแรง:** ฐานการผลิตหลักตั้งอยู่ในเกาะไต้หวัน ซึ่งอยู่ท่ามกลางความตึงเครียดทางการเมืองระหว่างจีนและสหรัฐฯ หากเกิดความขัดแย้งเชิงทหารอาจหยุดชะงักห่วงโซ่อุปทานเทคโนโลยีโลกทันที
+- **ต้นทุนการผลิตในต่างประเทศที่สูงกว่าคาด:** การจัดตั้งโรงงานใหม่ในสหรัฐฯ (อริโซนา) และยุโรป มีประเด็นความท้าทายเรื่องแรงงาน วัฒนธรรมองค์กร และต้นทุนก่อสร้างที่อาจดึงให้อัตรากำไรรวมลดลง
+
+### 5. Kill conditions
+- เกิดสถานการณ์ความขัดแย้งเชิงทหารหรือการปิดล้อมเกาะไต้หวันทางเศรษฐกิจอย่างถาวร จนทำให้สายการผลิตหลักไม่สามารถปฏิบัติงานได้
+- อัตรากำไรขั้นต้นรวม (Gross Margin) อ่อนตัวลดลงอย่างต่อเนื่องต่ำกว่าระดับ 48% บ่งชี้การเผชิญหน้ากับต้นทุนวัตถุดิบและค่าเสื่อมราคาโรงงานต่างแดนที่รุนแรงเกินรับไหว
+
+### 6. What to ask before owning it
+- ความต้องการใช้ชิปประมวลผลขนาด 2 นาโนเมตรที่กำลังจะเริ่มผลิตจริงจะเพียงพอต่อการรักษาฐานราคาสูงและการใช้งานสายการผลิตที่เต็มพิกัดหรือไม่?
+- ความพยายามในการกระจายกำลังการผลิตไปยังต่างประเทศจะช่วยคลายความกังวลเชิงความเสี่ยงทางภูมิรัฐศาสตร์ของเหล่านักลงทุนสไตล์คุณค่าได้ดีเพียงใด?
+`
+      },
+      {
+        ticker: "BRK.B",
+        companyName: "Berkshire Hathaway Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#00356b",
+        snapshot: "Berkshire Hathaway Inc. เป็นกลุ่มบริษัทโฮลดิ้งสัญชาติอเมริกันที่ดำเนินธุรกิจการลงทุนขนาดยักษ์ภายใต้การนำของตำนานนักลงทุน Warren Buffett โดยเป็นเจ้าของธุรกิจหลักด้านการประกันภัย (GEICO) การขนส่งทางรถไฟ (BNSF) พลังงาน และถือครองหุ้นบลูชิปมูลค่ามหาศาล",
+        markdown: `# Berkshire Hathaway Inc. (BRK.B) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Berkshire Hathaway Inc. เป็นกลุ่มบริษัทโฮลดิ้งสัญชาติอเมริกันที่ดำเนินธุรกิจการลงทุนขนาดยักษ์ภายใต้การนำของตำนานนักลงทุน Warren Buffett โดยเป็นเจ้าของธุรกิจหลักด้านการประกันภัย (GEICO) การขนส่งทางรถไฟ (BNSF) พลังงาน และถือครองหุ้นบลูชิปมูลค่ามหาศาล
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างมั่นคงและมีทิศทางสม่ำเสมอตามสภาพการเจริญเติบโตของระบบเศรษฐกิจสหรัฐอเมริกา โดยได้รับแรงหนุนจากกระแสเงินสดหมุนเวียนของกลุ่มธุรกิจสาธารณูปโภคและเบี้ยประกันภัย
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นและกำไรจากการดำเนินงานที่สม่ำเสมอและคาดการณ์ได้สูง จากการคัดสรรธุรกิจที่มีพลังอำนาจในการกำหนดราคาสูงเข้ามาร่วมพอร์ตโฟลิโอ
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีโครงสร้างทางการเงินที่แข็งแกร่งไร้เทียมทาน ถือครองกระแสเงินสดสำรองสภาพคล่องระดับแสนล้านดอลลาร์สหรัฐเพื่อเตรียมไว้ช้อนซื้อกิจการคุณภาพดีในช่วงสภาวะตลาดวิกฤต
+- **การจัดสรรเงินทุน (Capital allocation):** เน้นการจัดสรรเงินทุนอย่างมีวินัยสูงสุด โดยหลีกเลี่ยงการจ่ายเงินปันผลแต่ใช้กระแสเงินสดมาซื้อหุ้นคืนเมื่อราคาต่ำกว่ามูลค่าที่แท้จริง หรือนำไปลงทุนต่อในธุรกิจที่สร้าง ROIC สูง
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Process Power & Capital Allocation Strategy:** ความสามารถในการจัดสรรเงินทุน (Capital Allocation) ที่สืบทอดระบบคิดเชิงลึก ทำให้บริษัทเป็นสุดยอดเครื่องจักรผลิตกระแสเงินสดและลงทุนสร้างความมั่งคั่งอย่างปลอดภัย
+- **Float from Insurance Moat (Scale Economies & Branding):** ธุรกิจประกันภัยขนาดใหญ่สร้างเงิน Float (เบี้ยประกันรับล่วงหน้าที่ยังไม่ได้เคลม) ปริมาณมหาศาล ซึ่งเป็นแหล่งทุนต้นทุนต่ำอย่างยิ่งในการนำไปสร้างผลตอบแทน
+
+**Bear case (มุมมองลบ):**
+- **ความเสี่ยงจากการเปลี่ยนผ่านตัวบุคคลสำคัญ:** แม้จะมีทีมบริหารรุ่นใหม่ที่วางตัวไว้อย่างเป็นระบบ แต่การสิ้นสุดยุคของ Warren Buffett อาจส่งผลต่อความเชื่อมั่นระยะสั้นของผู้ถือหุ้นและราคาหุ้น
+- **ขนาดของสินทรัพย์ที่ใหญ่เกินไป (Size Drag):** ด้วยขนาดบริษัทที่มหึมา ทำให้การหาดีลซื้อกิจการที่จะส่งผลกระทบสร้างการเจริญเติบโตเป็นเปอร์เซ็นต์สองหลักทำได้ยากยิ่งขึ้น
+
+### 5. Kill conditions
+- เกิดข้อบกพร่องร้ายแรงด้านการจัดสรรเงินทุนของทีมบริหารรุ่นใหม่ เช่น การนำเงินสดสำรองไปซื้อกิจการที่ล้มเหลวและทำลายมูลค่าหุ้นผู้ถือหุ้นอย่างมีนัยสำคัญ
+- การเปลี่ยนแปลงทางกฎหมายภาษีของสหรัฐฯ ที่เก็บภาษีจากการซื้อหุ้นคืนในอัตราที่สูงมากจนบั่นทอนประสิทธิภาพโครงสร้างการจัดสรรเงินทุนหลักของบริษัท
+
+### 6. What to ask before owning it
+- ทีมบริหารการลงทุนรุ่นใหม่จะสามารถรักษาผลงานการสร้างผลตอบแทนที่ชนะตลาดดัชนี S&P 500 ได้อย่างยั่งยืนในระยะยาวหลังการเปลี่ยนผ่านผู้นำหรือไม่?
+- กองเงินสดสำรองที่สะสมอยู่ระดับสูงสุดเป็นประวัติการณ์จะถูกนำไปใช้อย่างมีประสิทธิภาพในช่วงสภาวะฟองสบู่คลาดเคลื่อนของตลาดปัจจุบันอย่างไร?
+`
+      },
+      {
+        ticker: "V",
+        companyName: "Visa Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#1a1f71",
+        snapshot: "Visa Inc. เป็นผู้ให้บริการโครงข่ายระบบการชำระเงินดิจิทัลที่ใหญ่ที่สุดในโลก ทำหน้าที่เป็นสะพานเชื่อมธุรกรรมระหว่างผู้บริโภค ร้านค้า และสถาบันการเงินการธนาคารในกว่า 200 ประเทศ โดยสร้างรายได้หลักจากค่าธรรมเนียมตามปริมาณการรูดจ่ายเงินและจำนวนครั้งของธุรกรรม",
+        markdown: `# Visa Inc. (V) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Visa Inc. เป็นผู้ให้บริการโครงข่ายระบบการชำระเงินดิจิทัลที่ใหญ่ที่สุดในโลก ทำหน้าที่เป็นสะพานเชื่อมธุรกรรมระหว่างผู้บริโภค ร้านค้า และสถาบันการเงินการธนาคารในกว่า 200 ประเทศ โดยสร้างรายได้หลักจากค่าธรรมเนียมตามปริมาณการรูดจ่ายเงินและจำนวนครั้งของธุรกรรม
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตสม่ำเสมอสอดคล้องกับแนวโน้มการลดบทบาทการใช้เงินสด (Cashless Society) และการเติบโตอย่างมั่นคงของการค้าออนไลน์ทั่วโลก
+- **อัตรากำไร (Margin trend):** อัตรากำไรจากการดำเนินงานสูงอย่างน่าทึ่งที่ระดับ 65-68% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) เนื่องจากค่าใช้จ่ายในการดำเนินงานระบบเครือข่ายมีลักษณะคงที่สูงเมื่อเทียบกับวอลลุ่มธุรกรรมที่เพิ่มขึ้น
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีงบการเงินที่สะอาดและแข็งแกร่งมาก กระแสเงินสดอิสระหลั่งไหลเข้ามาสม่ำเสมอทุกวันโดยไม่มีความเสี่ยงด้านภาระการให้สินเชื่อเนื่องจากบริษัทไม่ได้เป็นผู้ปล่อยกู้เอง
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งส่งมอบเงินคืนแก่ผู้ถือหุ้นผ่านการซื้อหุ้นคืนและการจ่ายเงินปันผลที่เพิ่มขึ้นทุกปี ควบคู่กับการลงทุนพัฒนาระบบรักษาความปลอดภัยทางไซเบอร์ที่ล้ำสมัย
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Network Economies ที่แข็งแกร่งที่สุดในโลก:** การมีบัตร Visa ในมือผู้บริโภคนับพันล้านใบ บังคับให้ร้านค้าทั่วโลกต้องยอมรับการชำระเงินผ่านระบบของ Visa ยิ่งร้านรับเยอะ บัตรก็ยิ่งขยายตัว เกิดโครงสร้างผูกขาดคู่ (Duopoly) ร่วมกับ Mastercard
+- **Inflation Hedge & Scale Benefits (Branding & Switching Costs):** เนื่องจากรายได้อิงตามเปอร์เซ็นต์ยอดขายสินค้า เมื่อเกิดภาวะเงินเฟ้อที่ราคาสินค้าปรับตัวสูงขึ้น ยอดเงินที่รูดผ่านระบบและรายได้ของ Visa ก็จะปรับตัวสูงขึ้นตามโดยอัตโนมัติ
+
+**Bear case (มุมมองลบ):**
+- **ภัยคุกคามทางเทคโนโลยีและการชำระเงินรูปแบบใหม่:** การเกิดขึ้นของเครือข่ายบล็อกเชน, บัญชีโอนเงินโดยตรงของภาครัฐ (เช่น FedNow), หรือบริการกระเป๋าเงินดิจิทัลที่ไม่ผ่านระบบบัตรเครือข่าย
+- **แรงกดดันทางกฎหมายเรื่องการจำกัดค่าธรรมเนียม:** รัฐบาลในหลายภูมิภาคพยายามเข้ามาแทรกแซงและกำหนดเพดานอัตราค่าธรรมเนียมรูดบัตร (Interchange fees) เพื่อช่วยเหลือร้านค้าขนาดเล็ก
+
+### 5. Kill conditions
+- มีการผ่านกฎหมายในตลาดสำคัญอย่างสหรัฐอเมริกาที่บังคับลดอัตราค่าธรรมเนียมการทำธุรกรรมหรือบังคับให้ร้านค้าสามารถเลือกใช้เครือข่ายทางเลือกอื่นที่ราคาถูกกว่าเครือข่ายหลัก
+- อัตรากำไรจากการดำเนินงานหลัก (Operating Margin) ปรับตัวลดลงต่ำกว่า 55% ติดต่อกัน 3 ไตรมาสอันเนื่องมาจากการปรับเปลี่ยนโมเดลแบ่งส่วนแบ่งรายได้ให้แพลตฟอร์มฟินเทคภายนอก
+
+### 6. What to ask before owning it
+- ทิศทางการขยายตัวของการชำระเงินแบบไร้สัมผัส (Contactless) และการค้าผ่านอุปกรณ์มือถือจะช่วยรักษาอัตราการเติบโตระดับสองหลักไปได้อีกนานเท่าใด?
+- ความพยายามในการสร้างเครือข่ายบริการชำระเงินระหว่างธุรกิจกับธุรกิจ (B2B Payments) จะสามารถเติบโตขึ้นมาเป็นเสารายได้ที่สำคัญได้จริงหรือไม่?
+`
+      },
+      {
+        ticker: "MA",
+        companyName: "Mastercard Incorporated",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#f79e1b",
+        snapshot: "Mastercard Incorporated เป็นเครือข่ายประมวลผลธุรกรรมการชำระเงินดิจิทัลระดับโลกที่เป็นคู่แข่งคนสำคัญของ Visa โดยให้บริการประมวลผลการโอนเงินชำระเงินผ่านแบรนด์บัตรเครดิต บัตรเดบิต และระบบบริการชำระเงินผ่านมือถือร่วมกับสถาบันการเงินและร้านค้าพันธมิตรทั่วโลก",
+        markdown: `# Mastercard Incorporated (MA) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Mastercard Incorporated เป็นเครือข่ายประมวลผลธุรกรรมการชำระเงินดิจิทัลระดับโลกที่เป็นคู่แข่งคนสำคัญของ Visa โดยให้บริการประมวลผลการโอนเงินชำระเงินผ่านแบรนด์บัตรเครดิต บัตรเดบิต และระบบบริการชำระเงินผ่านมือถือร่วมกับสถาบันการเงินและร้านค้าพันธมิตรทั่วโลก
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างมั่นคงแข็งแกร่งควบคู่ไปกับ Visa ด้วยแรงสนับสนุนหลักจากธุรกรรมข้ามพรมแดน (Cross-border transactions) ที่ฟื้นตัวและการเติบโตอย่างต่อเนื่องของ E-commerce ทั่วโลก
+- **อัตรากำไร (Margin trend):** สามารถรักษาอัตรากำไรจากการดำเนินงานในระดับสูงกว่า 55-58% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบการประมวลผลเทคโนโลยีสากลที่มีต้นทุนผันแปรต่อชิ้นงานต่ำเป็นพิเศษ
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีโครงสร้างงบดุลแข็งแกร่ง มีความยืดหยุ่นทางการเงินสูง มีกระแสเงินสดสะสมพรั่งพร้อมและแทบไม่มีความเสี่ยงหนี้เสียเนื่องจากไม่ได้ทำหน้าที่ออกวงเงินกู้แก่ผู้ใช้บัตรโดยตรง
+- **การจัดสรรเงินทุน (Capital allocation):** เน้นการจัดสรรเงินทุนที่มีประสิทธิภาพผ่านการนำไปลงทุนพัฒนานวัตกรรมการชำระเงินความปลอดภัยสูง และเน้นการซื้อหุ้นคืนควบคู่กับการจ่ายเงินปันผลสม่ำเสมอ
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Network Economies (โครงสร้างเครือข่ายสองด้าน):** เช่นเดียวกับ Visa พลังขับเคลื่อนจากผู้ใช้งานและร้านค้าสร้างเป็นป้อมปราการหนาแน่น ป้องกันไม่ให้คู่แข่งรายย่อยเข้ามาแชร์ตลาดได้เนื่องจากร้านค้าจะไม่ยอมเชื่อมระบบที่ไม่มีคนใช้งาน
+- **Value-Added Services (Branding & Switching Costs):** นอกเหนือจากการรูดชำระเงิน Mastercard ยังมีความโดดเด่นในด้านบริการตรวจสอบทุจริต (Fraud prevention) และบริการวิเคราะห์ข้อมูลซึ่งเป็นเสารายได้เติบโตเร็ว
+
+**Bear case (มุมมองลบ):**
+- **กฎระเบียบจำกัดการผูกขาดและการควบคุมค่าธรรมเนียม:** ความเสี่ยงในการถูกควบคุมเพดานอัตราค่าธรรมเนียมรูดบัตรจากผู้บัญญัติกฎหมายในสหรัฐฯ และยุโรปเพื่อลดภาระของผู้ประกอบการค้าปลีก
+- **การเติบโตของฟินเทคและการชำระเงินทางเลือก:** ระบบการซื้อก่อนจ่ายทีหลัง (BNPL) หรือการโอนเงินกระเป๋าดิจิทัลโดยตรงผ่านรหัส QR ที่ข้ามกระบวนการประมวลผลระบบบัตรดั้งเดิม
+
+### 5. Kill conditions
+- ศาลพิพากษาสิ้นสุดในคดีสำคัญที่ระบุให้ Mastercard ต้องปรับปรุงลดอัตราค่าธรรมเนียมธุรกรรมรูดบัตรลงอย่างมีนัยสำคัญจนกระทบโครงสร้างมาร์จิ้นหลัก
+- อัตราส่วนกระแสเงินสดอิสระต่อรายได้สุทธิปรับตัวลดต่ำลงอย่างมีนัยสำคัญติดต่อกัน 3 ไตรมาสอันเนื่องมาจากการปรับเปลี่ยนโมเดลแบ่งผลประโยชน์แก่ร้านค้า
+
+### 6. What to ask before owning it
+- บริการเสริมด้านความปลอดภัยทางไซเบอร์และการวิเคราะห์พฤติกรรมข้อมูลผู้ใช้จะยังคงเติบโตช่วยเพิ่มมูลค่ารายได้เฉลี่ยต่อธุรกรรมได้ดีเพียงใด?
+- กลยุทธ์การรุกคืบเข้าสู่ระบบการโอนเงินชำระเงินแบบเรียลไทม์จะช่วยลดแรงเสียดทานจากการแข่งขันของฟินเทคหน้าใหม่ได้ดีแค่ไหน?
+`
+      },
+      {
+        ticker: "JPM",
+        companyName: "JPMorgan Chase & Co.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#af9e7a",
+        snapshot: "JPMorgan Chase & Co. เป็นสถาบันการเงินที่ใหญ่ที่สุดในสหรัฐอเมริกาและเป็นหนึ่งในธนาคารที่มีอิทธิพลมากที่สุดในโลก โดยให้บริการทางการเงินหลากหลายประเภท เช่น ธนาคารเพื่อการบริโภคและการลงทุน การจัดการสินทรัพย์ และการธนาคารพาณิชย์ โครงสร้างรายได้หลักขับเคลื่อนด้วยรายได้ดอกเบี้ยสุทธิจาก...",
+        markdown: `# JPMorgan Chase & Co. (JPM) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+JPMorgan Chase & Co. เป็นสถาบันการเงินที่ใหญ่ที่สุดในสหรัฐอเมริกาและเป็นหนึ่งในธนาคารที่มีอิทธิพลมากที่สุดในโลก โดยให้บริการทางการเงินหลากหลายประเภท เช่น ธนาคารเพื่อการบริโภคและการลงทุน การจัดการสินทรัพย์ และการธนาคารพาณิชย์ โครงสร้างรายได้หลักขับเคลื่อนด้วยรายได้ดอกเบี้ยสุทธิจากธุรกิจธนาคารแบบดั้งเดิม และรายได้ที่มิใช่ดอกเบี้ยจากค่าธรรมเนียมการบริหารสินทรัพย์และการทำธุรกรรมทางการเงิน
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตแข็งแกร่งท่ามกลางสภาพแวดล้อมอัตราดอกเบี้ยที่อยู่ในระดับสูง โดยได้แรงหนุนอย่างมหาศาลจากการขยายฐานผู้ฝากเงินและความแข็งแกร่งในการเป็นแหล่งพักเงินที่ปลอดภัย (Flight to safety) ในช่วงวิกฤตสถาบันการเงินขนาดเล็ก
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรสุทธิและการทำกำไรได้ดีเยี่ยมนําหน้ากลุ่มอุตสาหกรรม โดยมีระดับส่วนต่างรายได้ดอกเบี้ยสุทธิ (NIM) ที่แข็งแกร่งและอัตราส่วนผลตอบแทนต่อส่วนของผู้ถือหุ้นจับต้องได้ (ROTCE) ระดับ 18-20% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด)
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีงบดุลแบบป้อมปราการ (Fortress Balance Sheet) ที่มีความแข็งแกร่งสูงสุดเป็นเลิศ มีเงินทุนและสินทรัพย์สภาพคล่องสำรองปริมาณล้นเหลือเพื่อรองรับความไม่แน่นอนทางเศรษฐกิจและเกณฑ์การควบคุมที่เข้มงวด
+- **การจัดสรรเงินทุน (Capital allocation):** บริหารจัดการเงินทุนอย่างชาญฉลาดโดยเน้นรักษาเสถียรภาพเงินกองทุนขั้นต่ำ (CET1) พร้อมปันผลสม่ำเสมอและซื้อหุ้นคืนอย่างระมัดระวังเมื่อเห็นราคาหุ้นต่ำกว่ามูลค่าที่แท้จริง
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Scale Economies & Fortress Brand:** ขนาดสินทรัพย์และชื่อเสียงเป็นเสมือนแม่เหล็กดึงดูดกระแสเงินฝากต้นทุนต่ำในระยะยาว ทำให้ต้นทุนเงินทุนต่ำกว่าธนาคารคู่แข่งรายย่อยอย่างชัดเจน
+- **Cross-Selling & Diversified Revenue (Switching Costs):** ความสามารถในการนำเสนอผลิตภัณฑ์ทางการเงินครบวงจร ทำให้รักษาฐานลูกค้าระดับองค์กรและลูกค้าระดับมั่งคั่งสูงไว้ได้อย่างเหนียวแน่นเหนือกาลเวลา
+
+**Bear case (มุมมองลบ):**
+- **ความอ่อนไหวต่อวัฏจักรเศรษฐกิจและอัตราดอกเบี้ย:** หากเศรษฐกิจเข้าสู่ภาวะถดถอยและเกิดปัญหาหนี้เสีย (NPL) สูง หรือหากอัตราดอกเบี้ยปรับตัวลดลงอย่างรวดเร็ว จะกดดัน NIM และรายได้หลักจากดอกเบี้ยลงอย่างหลีกเลี่ยงไม่ได้
+- **การควบคุมที่เข้มงวดจากหน่วยงานภาครัฐ:** มาตรการสากลอย่าง Basel III Endgame ที่เข้มงวดขึ้น อาจบีบให้ธนาคารต้องสำรองเงินทุนเพิ่มขึ้น ซึ่งลดประสิทธิภาพในการทำกำไรและลดความยืดหยุ่นในการจัดสรรเงินทุนเพื่อตอบแทนผู้ถือหุ้น
+
+### 5. Kill conditions
+- อัตราส่วนผลตอบแทนต่อส่วนของผู้ถือหุ้นจับต้องได้ (ROTCE) ลดลงต่ำกว่า 12% ติดต่อกันเป็นเวลาเกิน 3 ไตรมาส บ่งชี้การสิ้นสุดความสามารถในการแข่งขันระดับพรีเมียม
+- ทีมบริหารหลักสูญเสียวินัยทางการเงินและนำเงินกองทุนสำรองไปซื้อกิจการขนาดใหญ่ที่มีความเสี่ยงสูงนอกอุตสาหกรรมธนาคาร
+
+### 6. What to ask before owning it
+- การเปลี่ยนผ่านผู้นำระดับสูงในอนาคตต่อจาก Jamie Dimon จะยังคงรักษาวิสัยทัศน์ 'งบดุลแบบป้อมปราการ' และการบริหารความเสี่ยงแบบระมัดระวังสูงสุดได้ต่อเนื่องเพียงใด?
+- การเติบโตของฟินเทคและผู้ให้บริการชำระเงินนอกระบบธนาคารแบบดั้งเดิมจะสามารถเข้ามาชิงเค้กรายได้ค่าธรรมเนียมธุรกรรมของ JPM ได้มากน้อยแค่ไหนในระยะยาว?
+`
+      },
+      {
+        ticker: "COST",
+        companyName: "Costco Wholesale Corporation",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#e31b23",
+        snapshot: "Costco Wholesale Corporation เป็นผู้ดำเนินธุรกิจคลังสินค้าแบบสมาชิก (Membership Warehouse Club) ที่ใหญ่ที่สุดในโลก โดยนำเสนอสินค้าอุปโภคบริโภคคุณภาพสูงในราคาส่งที่ต่ำเป็นพิเศษแก่สมาชิกที่เสียค่าธรรมเนียมรายปี โครงสร้างรายได้ที่สำคัญขับเคลื่อนด้วยรายได้ค่าสมาชิกรายปี (Membership F...",
+        markdown: `# Costco Wholesale Corporation (COST) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Costco Wholesale Corporation เป็นผู้ดำเนินธุรกิจคลังสินค้าแบบสมาชิก (Membership Warehouse Club) ที่ใหญ่ที่สุดในโลก โดยนำเสนอสินค้าอุปโภคบริโภคคุณภาพสูงในราคาส่งที่ต่ำเป็นพิเศษแก่สมาชิกที่เสียค่าธรรมเนียมรายปี โครงสร้างรายได้ที่สำคัญขับเคลื่อนด้วยรายได้ค่าสมาชิกรายปี (Membership Fees) ซึ่งมีอัตราการต่ออายุสมาชิกในอเมริกาเหนือสูงกว่า 90%
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตมั่นคงและสม่ำเสมอในทุกสภาพเศรษฐกิจจากการขยายตัวของจำนวนสมาชิกและการเพิ่มสาขาใหม่ทั่วโลกอย่างรอบคอบเป็นระบบ
+- **อัตรากำไร (Margin trend):** ภาพรวมอัตรากำไรขั้นต้นต่ำมากประมาณ 11-12% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) เนื่องจากนโยบายขายสินค้าในราคาเกือบเท่าทุนเพื่อมอบความคุ้มค่าสูงสุดแก่สมาชิก แต่สามารถรักษากำไรสุทธิที่แน่นอนได้จากรายได้ค่าสมาชิกซึ่งมีกำไรเกือบ 100%
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีงบดุลที่สะท้อนสุขภาพทางการเงินแข็งแกร่งอย่างยิ่ง มีเงินสดและสภาพคล่องหมุนเวียนจำนวนมหาศาล และบริหารจัดการเงินทุนหมุนเวียน (Working Capital) ได้มีประสิทธิภาพสูงสุดจากการหมุนเวียนสินค้าที่รวดเร็ว
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการลงทุนขยายสาขาและการพัฒนาระบบโลจิสติกส์ พร้อมกับคืนผลตอบแทนแก่ผู้ถือหุ้นผ่านการปันผลปกติ ปันผลพิเศษครั้งใหญ่ (Special Dividends) และการซื้อหุ้นคืน
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Scale Economies & Shared Value (Shared Economies of Scale):** ยิ่งสั่งซื้อของปริมาณมาก ยิ่งได้ราคาถูกลง และส่งต่อส่วนลดทั้งหมดให้แก่สมาชิก ทำให้ผู้บริโภคเกิดความภักดีสูงมาก
+- **High Customer Retention & Subscription Model (Switching Costs & Branding):** รายได้ค่าสมาชิกรายปีเป็นเสมือนกระแสเงินสดล่วงหน้าที่มีความแน่นอนและคาดการณ์ได้สูง ช่วยรองรับแรงกระแทกในช่วงเศรษฐกิจตกต่ำได้เป็นอย่างดี
+
+**Bear case (มุมมองลบ):**
+- **มูลค่าหุ้น (Valuation) ที่อยู่ในระดับสูงอย่างยาวนาน:** ซื้อขายบนระดับ P/E Ratio ที่พรีเมียมสูงมากเมื่อเทียบกับกลุ่มค้าปลีกทั่วไป ทำให้แทบไม่มี Margin of Safety หากการเติบโตชะลอตัวลงเล็กน้อยอาจส่งผลต่อราคาหุ้นรุนแรง
+- **ขีดจำกัดในการเปิดสาขาใหม่ในระยะยาว:** การหาทำเลที่เหมาะสมสำหรับโมเดลคลังสินค้าขนาดใหญ่ในตลาดอเมริกาที่เริ่มอิ่มตัวอาจทำได้ยากขึ้น บังคับให้ต้องพึ่งพาการเติบโตจากสาขาเดิม (SSSG) และการขยายตลาดต่างประเทศที่มีความแตกต่างทางวัฒนธรรมการบริโภค
+
+### 5. Kill conditions
+- อัตราการต่ออายุสมาชิก (Renewal Rate) ปรับตัวลดลงต่ำกว่า 85% ทั่วโลก ติดต่อกันเกิน 2 ไตรมาส สะท้อนการเสื่อมถอยในความคุ้มค่าของบัตรสมาชิก
+- บริษัทปรับนโยบายกำไรโดยการขึ้นราคาค่าสินค้าอย่างรุนแรงเพื่อเพิ่มอัตรากำไรขั้นต้นชั่วคราว ทำลายโมเดล 'ส่งต่อความคุ้มค่าแก่สมาชิก' ไปอย่างสิ้นเชิง
+
+### 6. What to ask before owning it
+- ศักยภาพในการเติบโตของการค้าออนไลน์ของ Costco จะสามารถเข้ามาเสริมโมเดลการเข้าซื้อสินค้าที่หน้าร้านแบบเดิมโดยไม่สูญเสียความตื่นเต้นในการช้อปปิ้งคลังสินค้าได้สำเร็จหรือไม่?
+- ความท้าทายในการขยายสาขาไปยังเอเชียและยุโรปจะเผชิญหน้ากับพฤติกรรมการบริโภคที่แตกต่างและพื้นที่ที่จำกัดอย่างไรเพื่อรักษาประสิทธิภาพของผลตอบแทนต่อเงินลงทุน (ROIC) ในระดับสูง?
+`
+      },
+      {
+        ticker: "WMT",
+        companyName: "Walmart Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#ffc220",
+        snapshot: "Walmart Inc. เป็นบริษัทยักษ์ใหญ่ด้านการค้าปลีกขนาดยักษ์ที่ใหญ่ที่สุดในโลก โดยดำเนินธุรกิจห้างสรรพสินค้าซูเปอร์เซ็นเตอร์ ไฮเปอร์มาร์เก็ต และร้านค้าปลีกหลากหลายรูปแบบในหลายประเทศ รวมถึงแพลตฟอร์มอีคอมเมิร์ซที่ขยายตัวรวดเร็ว โครงสร้างรายได้หลักขับเคลื่อนด้วยการจำหน่ายสินค้าอุปโภคบริโ...",
+        markdown: `# Walmart Inc. (WMT) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Walmart Inc. เป็นบริษัทยักษ์ใหญ่ด้านการค้าปลีกขนาดยักษ์ที่ใหญ่ที่สุดในโลก โดยดำเนินธุรกิจห้างสรรพสินค้าซูเปอร์เซ็นเตอร์ ไฮเปอร์มาร์เก็ต และร้านค้าปลีกหลากหลายรูปแบบในหลายประเทศ รวมถึงแพลตฟอร์มอีคอมเมิร์ซที่ขยายตัวรวดเร็ว โครงสร้างรายได้หลักขับเคลื่อนด้วยการจำหน่ายสินค้าอุปโภคบริโภคทั่วไปในราคาถูกทุกวัน (Everyday Low Prices - EDLP) แก่กลุ่มลูกค้าทุกระดับ
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างสม่ำเสมอและมั่นคงสูง ได้รับแรงสนับสนุนจากความแข็งแกร่งของหมวดหมู่สินค้าประเภทอาหารและของชำ (Grocery) ซึ่งทำหน้าที่เป็นเกราะป้องกันความผันผวนของวงจรเศรษฐกิจ
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นที่สม่ำเสมอประมาณ 23-24% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) และพยายามยกระดับอัตรากำไรผ่านการขยายช่องทางบริการโฆษณาดิจิทัล (Walmart Connect) และการบริการจัดส่งสินค้าแบบบอกรับสมาชิก (Walmart+)
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะทางการเงินที่มั่นคงแข็งแกร่งและน่าเชื่อถือสูง มีความสามารถในการกู้ยืมเงินทุนต้นทุนต่ำอย่างมีเสถียรภาพ และมีกระแสเงินสดจากการดำเนินงานปีละหลายหมื่นล้านเหรียญ
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการลงทุนเชิงรุกในเทคโนโลยีห่วงโซ่อุปทานและหุ่นยนต์คลังสินค้าเพื่อประหยัดต้นทุน และดำเนินโครงการซื้อหุ้นคืนควบคู่กับการเพิ่มการจ่ายเงินปันผลต่อเนื่องยาวนานกว่า 50 ปี
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Scale Economies & Supply Chain Dominance:** ความเป็นยักษ์ใหญ่เบอร์หนึ่งของค้าปลีกทำให้สามารถเจรจาต่อรองกดราคากับผู้ผลิต (Suppliers) ได้ต่ำที่สุด และมีระบบขนส่งโลจิสติกส์ที่ประหยัดต้นทุนที่สุดในอเมริกา
+- **Digital Omnichannel & High-Margin Revenue (Branding & Process Power):** การพัฒนาแพลตฟอร์มอีคอมเมิร์ซและการขายพื้นที่โฆษณาดิจิทัลช่วยเปิดโอกาสใหม่ในการเติบโตของรายได้ที่มีอัตรากำไรสูงเป็นพิเศษ
+
+**Bear case (มุมมองลบ):**
+- **การแข่งขันที่รุนแรงกับคู่แข่งสายออนไลน์และค้าปลีกราคาสุดประหยัด:** ต้องเผชิญหน้ากับการต่อสู้แย่งชิงส่วนแบ่งตลาดที่รุนแรงกับ Amazon ในฝั่งออนไลน์ และห้างสรรพสินค้าราคาประหยัด (Dollar Stores) ในฝั่งหน้าร้าน
+- **ต้นทุนแรงงานและค่าขนส่งที่ผันผวน:** การมีฐานพนักงานนับล้านคนทำให้มีความเปราะบางต่อการเพิ่มขึ้นของอัตราค่าจ้างขั้นต่ำและต้นทุนค่าบริการสวัสดิการพนักงานที่ขยายตัวอย่างต่อเนื่อง
+
+### 5. Kill conditions
+- อัตราการขยายตัวของยอดขายผ่านแพลตฟอร์มดิจิทัลอีคอมเมิร์ซหดตัวลงอย่างมีนัยสำคัญ หรือพ่ายแพ้การแข่งขันแบบสิ้นเชิงจนต้องปรับลดเป้าหมายรายได้ลงอย่างถาวร
+- อัตรากำไรจากการดำเนินงานหลัก (Operating Margin) ปรับตัวลดต่ำลงกว่า 3.5% ติดต่อกันเป็นเวลา 3 ไตรมาส จากแรงกดดันด้านค่าแรงและการแข่งขันตัดราคาที่ถาวร
+
+### 6. What to ask before owning it
+- ระบบการเป็นสมาชิก Walmart+ จะสามารถสร้างความภักดีและขยายฐานลูกค้าเพื่อสู้กับความแข็งแกร่งของ Amazon Prime ได้ดีเพียงใดในระยะยาว?
+- การนำระบบอัตโนมัติ (Automation) และเทคโนโลยีหุ่นยนต์มาใช้ในคลังสินค้าจะช่วยควบคุมค่าใช้จ่ายด้านพนักงานและเพิ่มขีดความสามารถการทำกำไรได้รวดเร็วเพียงใด?
+`
+      },
+      {
+        ticker: "KO",
+        companyName: "The Coca-Cola Company",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#e31b23",
+        snapshot: "The Coca-Cola Company เป็นบริษัทเครื่องดื่มที่ใหญ่ที่สุดในโลก โดยเป็นเจ้าของและจำหน่ายแบรนด์เครื่องดื่มไม่มีแอลกอฮอล์ระดับตำนานมากมาย เช่น Coca-Cola, Sprite, Fanta, Minute Maid และ Costa Coffee โครงสร้างธุรกิจเน้นการเป็นเจ้าของแบรนด์และผลิตเฉพาะหัวน้ำเชื่อมเข้มข้น (Concentrate) แ...",
+        markdown: `# The Coca-Cola Company (KO) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+The Coca-Cola Company เป็นบริษัทเครื่องดื่มที่ใหญ่ที่สุดในโลก โดยเป็นเจ้าของและจำหน่ายแบรนด์เครื่องดื่มไม่มีแอลกอฮอล์ระดับตำนานมากมาย เช่น Coca-Cola, Sprite, Fanta, Minute Maid และ Costa Coffee โครงสร้างธุรกิจเน้นการเป็นเจ้าของแบรนด์และผลิตเฉพาะหัวน้ำเชื่อมเข้มข้น (Concentrate) แล้วส่งไปให้โรงงานบรรจุขวดที่เป็นพันธมิตรภายนอกนำไปผสมน้ำและจัดจำหน่ายทั่วโลก
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตมั่นคงสม่ำเสมอในสกุลเงินท้องถิ่น ได้รับแรงหนุนจากอำนาจแบรนด์พรีเมียมที่ทำให้สามารถปรับขึ้นราคาเพื่อสู้กับสภาวะเงินเฟ้อทั่วโลกได้อย่างมีประสิทธิภาพ
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นที่โดดเด่นสูงสุดในระดับ 60% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากโมเดลธุรกิจขายหัวน้ำเชื้อที่มีต้นทุนการผลิตต่ำเป็นพิเศษและไม่มีความเสี่ยงด้านภาระการขนส่งขวดแก้วหนัก ๆ เอง
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีความมั่นคงและแข็งแกร่งสูงมาก มีกระแสเงินสดหลั่งไหลเข้ามาอย่างเป็นระบบและคาดการณ์ได้สูงในทุกฤดูกาลเพียบพร้อมสำหรับการชำระภาระผูกพันทางการเงิน
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการส่งคืนผลตอบแทนที่ยอดเยี่ยมแก่ผู้ถือหุ้นผ่านโครงการซื้อหุ้นคืนและเงินปันผลที่ปรับเพิ่มขึ้นยาวนานติดต่อกันกว่า 60 ปี (Dividend King)
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding Power & High Pricing Power:** แบรนด์ Coca-Cola มีคุณค่าทางจิตวิทยาเหนือกาลเวลา ทำให้ผู้บริโภคยอมรับการจ่ายเงินซื้อความสุขเล็ก ๆ น้อย ๆ นี้ได้แม้ในยามเศรษฐกิจถดถอย
+- **Asset-Light Business Model (Process Power & Scale Economies):** การผลักภาระโรงงานบรรจุขวดขนาดใหญ่ให้เป็นหน้าที่ของบริษัทผู้บรรจุขวดภายนอก ทำให้ Coca-Cola รักษา ROIC และกระแสเงินสดอิสระสุทธิไว้ในระดับสูงเยี่ยม
+
+**Bear case (มุมมองลบ):**
+- **ทัศนคติของผู้บริโภคที่เปลี่ยนไปเน้นรักษาสุขภาพ:** กระแสการลดการบริโภคน้ำตาลและสารปรุงแต่งสังเคราะห์เป็นภัยคุกคามระยะยาวต่อยอดขายน้ำอัดลมสูตรดั้งเดิม บังคับให้บริษัทต้องลงทุนพัฒนาเครื่องดื่มเพื่อสุขภาพทางเลือก
+- **ความเสี่ยงจากการผันผวนของค่าเงินต่างประเทศ:** เนื่องจากรายได้กว่าครึ่งมาจากนอกประเทศสหรัฐอเมริกา ทำให้มีความอ่อนไหวสูงเมื่อเงินดอลลาร์แข็งค่าขึ้นเมื่อเทียบกับสกุลเงินท้องถิ่นทั่วโลก
+
+### 5. Kill conditions
+- อัตราการบริโภคผลิตภัณฑ์น้ำอัดลมรวมทั่วโลกเกิดการลดลงอย่างรุนแรงแบบถาวร โดยที่แบรนด์เครื่องดื่มเพื่อสุขภาพทางเลือกใหม่ของบริษัทไม่สามารถทำยอดขายชดเชยได้สำเร็จ
+- เกิดปัญหาความตึงเครียดหรือข้อขัดแย้งกับบริษัทผู้บรรจุขวดพันธมิตรรายใหญ่ระดับทวีป จนทำให้ระบบการกระจายสินค้าหยุดชะงักอย่างถาวรในตลาดหลัก
+
+### 6. What to ask before owning it
+- กลยุทธ์การขยายพอร์ตโฟลิโอไปสู่เครื่องดื่มเพื่อสุขภาพ น้ำผลไม้ ชาพร้อมดื่ม และกาแฟ จะสามารถสร้างระดับอัตรากำไรขั้นต้นที่สูงเท่ากับหัวน้ำเชื่อมโค้กดั้งเดิมได้หรือไม่?
+- ความพยายามในการบุกตลาดเครื่องดื่มแอลกอฮอล์ระดับต่ำ (RTD) ร่วมกับพันธมิตรจะเปิดโอกาสการเติบโตใหม่โดยไม่สร้างความขัดแย้งเชิงจริยธรรมของแบรนด์ครอบครัวดั้งเดิมได้อย่างไร?
+`
+      },
+      {
+        ticker: "PEP",
+        companyName: "PepsiCo, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#004b93",
+        snapshot: "PepsiCo, Inc. เป็นผู้นำโลกด้านอาหารว่างและเครื่องดื่ม โดยครอบครองแบรนด์ชื่อดังระดับโลก เช่น Pepsi, Lay's, Doritos, Quaker Oats, Gatorade และ Tropicana โครงสร้างรายได้ของ PepsiCo มีความพิเศษตรงที่มีความสมดุลสูงระหว่างกลุ่มเครื่องดื่มและกลุ่มอาหารว่าง/ขนมขบเคี้ยว (Snacks & Food) ซึ...",
+        markdown: `# PepsiCo, Inc. (PEP) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+PepsiCo, Inc. เป็นผู้นำโลกด้านอาหารว่างและเครื่องดื่ม โดยครอบครองแบรนด์ชื่อดังระดับโลก เช่น Pepsi, Lay's, Doritos, Quaker Oats, Gatorade และ Tropicana โครงสร้างรายได้ของ PepsiCo มีความพิเศษตรงที่มีความสมดุลสูงระหว่างกลุ่มเครื่องดื่มและกลุ่มอาหารว่าง/ขนมขบเคี้ยว (Snacks & Food) ซึ่งช่วยเพิ่มความทนทานต่อสภาพเศรษฐกิจรอบตัว
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** ขยายตัวมั่นคงดีต่อเนื่องจากศักยภาพการขยายผลิตภัณฑ์ขนมขบเคี้ยวในตลาดโลกและอำนาจในการปรับขึ้นราคาสินค้าเพื่อชดเชยต้นทุนวัตถุดิบและเงินเฟ้อ
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นและกำไรจากการดำเนินงานที่แข็งแกร่งสม่ำเสมอเฉลี่ยประมาณ 53-54% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบขนส่งตรงถึงร้านค้า (Direct-Store-Delivery - DSD) ที่มีประสิทธิภาพสูง
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีโครงสร้างทางการเงินที่มั่นคงแข็งแกร่ง มีกระแสเงินสดสะสมอิสระหลั่งไหลเข้าสม่ำเสมอและมีความเสี่ยงการเงินต่ำเป็นระบบ
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการจัดสรรเงินทุนเพื่อขยายกำลังการผลิตอาหารว่างและปรับระบบไอที พร้อมตอบแทนผู้ถือหุ้นผ่านโครงการซื้อหุ้นคืนและเป็นหนึ่งในทำเนียบ Dividend King ที่ปันผลเพิ่มขึ้นต่อเนื่องกว่า 50 ปี
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding & Dual Engine Moat:** การบูรณาการระหว่างกลุ่มขนมขบเคี้ยว (Frito-Lay) และเครื่องดื่ม ทำให้เกิดพลังการต่อรองและจัดวางสินค้าในห้างร้านได้ดีกว่าคู่แข่งที่ขายเฉพาะกลุ่มเครื่องดื่มเพียงอย่างเดียว
+- **Direct-Store-Delivery Network (Scale Economies & Process Power):** เครือข่ายโลจิสติกส์จัดส่งและเติมสินค้าหน้าร้านด้วยตนเองทำหน้าที่เป็นกำแพงสิทธิประโยชน์ในการครองพื้นที่วางของดีที่สุดและตรวจสแกนยอดขายได้เรียลไทม์
+
+**Bear case (มุมมองลบ):**
+- **ความกดดันเรื่องสุขภาพและภาษีน้ำตาล/ไขมัน:** การเปลี่ยนทัศนะของผู้บริโภคสู่ขนมเพื่อสุขภาพและการผ่านกฎหมายควบคุมอาหารแปรรูปสามารถกดดันอัตราการบริโภคผลิตภัณฑ์ขนมกรุบกรอบหลักของบริษัท
+- **ความอ่อนไหวต่อต้นทุนวัตถุดิบทางการเกษตร:** ต้นทุนการผลิตมีความผันแปรสูงตามราคาสินค้าเกษตร เช่น มันฝรั่ง น้ำมันพืช แป้งสาลี และบรรจุภัณฑ์พลาสติก หากปรับราคาสู้เงินเฟ้อไม่ได้ทันท่วงทีอาจส่งผลต่อมาร์จิ้น
+
+### 5. Kill conditions
+- อัตราการเติบโตเชิงปริมาณ (Volume Growth) ของกลุ่มสินค้าขนมขบเคี้ยว Frito-Lay หดตัวลงอย่างต่อเนื่อง 3 ไตรมาส แสดงถึงความล้มเหลวในการปรับพอร์ตให้เข้ากับเทรนด์รักสุขภาพของผู้บริโภค
+- อัตรากำไรสุทธิรวม (Net Profit Margin) ของบริษัทลดต่ำลงต่ำกว่าระดับ 9% อย่างยั่งยืนเนื่องจากไม่สามารถส่งผ่านภาระต้นทุนวัตถุดิบที่พุ่งสูงไปให้ผู้บริโภคได้
+
+### 6. What to ask before owning it
+- PepsiCo จะสามารถขยายสัดส่วนสินค้าเพื่อสุขภาพ (Guilt-Free / Better-for-You) ให้กลายมาเป็นเสารายรับหลักในอนาคตได้อย่างไรโดยไม่ทำลายเสน่ห์ความอร่อยเดิมของแบรนด์หลัก?
+- ศักยภาพในการเพิ่มประสิทธิภาพและลดขยะจากการใช้หุ่นยนต์และระบบข้อมูลอัจฉริยะในกระบวนการ DSD จะช่วยรักษาความได้เปรียบทางต้นทุนของบริษัทได้ดีเพียงใด?
+`
+      },
+      {
+        ticker: "PG",
+        companyName: "The Procter & Gamble Company",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#003da5",
+        snapshot: "The Procter & Gamble Company (P&G) เป็นยักษ์ใหญ่ผู้ผลิตสินค้าอุปโภคบริโภคที่จำเป็นในชีวิตประจำวันระดับโลก ครอบคลุมแบรนด์ชั้นนำยอดนิยมมากมาย เช่น Pampers, Tide, Ariel, Gillette, Head & Shoulders, Oral-B และ Pantene โครงสร้างรายได้กระจายตัวและแข็งแกร่งด้วยกลุ่มสินค้าทำความสะอาดบ้าน...",
+        markdown: `# The Procter & Gamble Company (PG) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+The Procter & Gamble Company (P&G) เป็นยักษ์ใหญ่ผู้ผลิตสินค้าอุปโภคบริโภคที่จำเป็นในชีวิตประจำวันระดับโลก ครอบคลุมแบรนด์ชั้นนำยอดนิยมมากมาย เช่น Pampers, Tide, Ariel, Gillette, Head & Shoulders, Oral-B และ Pantene โครงสร้างรายได้กระจายตัวและแข็งแกร่งด้วยกลุ่มสินค้าทำความสะอาดบ้าน ผลิตภัณฑ์ดูแลร่างกาย และผลิตภัณฑ์สำหรับเด็กและครอบครัว
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างมั่นคงและเหนียวเหนอะหนะสูงมาก โดยอาศัยแบรนด์ระดับผู้นำอุตสาหกรรมที่ทำให้ผู้บริโภคต้องซื้อใช้งานอย่างสม่ำเสมอไม่ว่าสภาวะเศรษฐกิจจะเป็นอย่างไร
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นที่โดดเด่นสำหรับกลุ่มสินค้าอุปโภคที่ระดับประมาณ 48-50% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบผลิตขนาดใหญ่ที่ช่วยลดต้นทุนต่อหน่วยและการปรับใช้สินค้าพรีเมียมอัปเกรด
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีสถานะความน่าเชื่อถือทางการเงินระดับยอดเยี่ยมสูงสุด มีกระแสเงินสดอิสระที่มหาศาล มั่นคง และคาดการณ์ได้สูงมากในระยะยาว
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการอัดฉีดเงินลงทุนไปกับการวิจัยนวัตกรรมสินค้าและโฆษณาเพื่อตอกย้ำความเป็นผู้นำแบรนด์ พร้อมคืนเงินปันผลต่อเนื่องยาวนานกว่า 130 ปี และเพิ่มปันผลสม่เสมอกว่า 60 ปี
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding & Process Power:** ความภักดีในแบรนด์สินค้าอุปโภคที่ทดลองแล้วเชื่อถือได้สูง ทำให้ยากที่แบรนด์ราคาประหยัดทั่วไปจะเข้ามาแย่งตลาดได้ง่าย ๆ เนื่องจากผู้บริโภคไม่อยากเสี่ยงใช้ของไม่มีคุณภาพ
+- **Scale Economies with Retailers (Switching Costs):** การเป็นเจ้าของแบรนด์สินค้าขายดีจำนวนมากทำให้ P&G มีอำนาจต่อรองระดับสูงกับห้างค้าปลีกขนาดยักษ์ในการควบคุมเชลฟ์วางสินค้าที่ดีที่สุด
+
+**Bear case (มุมมองลบ):**
+- **การแข่งขันจากแบรนด์ของห้างค้าปลีกเอง (Private Label):** ในช่วงวิกฤตเศรษฐกิจหรือเงินเฟ้อรุนแรง ผู้บริโภคบางกลุ่มอาจหันไปซื้อสินค้าแบรนด์ของห้าง (เช่น Great Value ของ Walmart) ที่ราคาถูกกว่าเพื่อประหยัดเงินค่าใช้จ่าย
+- **ต้นทุนสารเคมีพื้นฐานและบรรจุภัณฑ์พลาสติก:** ธุรกิจมีความเปราะบางต่อความผันผวนของราคาน้ำมันดิบ สารเคมีตั้งต้น และเม็ดพลาสติก ซึ่งส่งผลกระทบต่อต้นทุนการผลิตโดยตรง
+
+### 5. Kill conditions
+- อัตราการเติบโตยอดขายในประเทศเศรษฐกิจเกิดใหม่ชะลอตัวลงถาวรเนื่องจากการบุกตลาดของแบรนด์ท้องถิ่นราคาถูกที่เข้าถึงผู้ใช้ได้ตรงจุดกว่า
+- อัตรากำไรขั้นต้น (Gross Margin) ปรับตัวลดต่ำลงหลุด 42% บ่งชี้การเผชิญหน้ากับภาวะสงครามราคากับแบรนด์ห้างสรรพสินค้า (Private Label) อย่างมีนัยสำคัญ
+
+### 6. What to ask before owning it
+- กลยุทธ์การยกระดับสินค้าสู่ระดับพรีเมียม (Premiumization) จะยังคงสามารถผลักดันให้ผู้ใช้งานยินดีจ่ายเงินแพงขึ้นสำหรับผลิตภัณฑ์ทำความสะอาดบ้านยุคใหม่ได้ยั่งยืนแค่ไหน?
+- ความพยายามในการลดการใช้พลาสติกและปรับปรุงการใช้วัสดุรีไซเคิลจะช่วยลดต้นทุนบรรจุภัณฑ์และตอบโจทย์กฎเกณฑ์อนุรักษ์สิ่งแวดล้อมได้รวดเร็วเพียงใด?
+`
+      },
+      {
+        ticker: "LLY",
+        companyName: "Eli Lilly and Company",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#0072ce",
+        snapshot: "Eli Lilly and Company เป็นบริษัทยักษ์ใหญ่ด้านเภสัชกรรมและการแพทย์ระดับโลกที่มุ่งเน้นการค้นคว้า วิจัย และพัฒนาและจัดจำหน่ายนวัตกรรมยารักษาโรคที่ปฏิวัติวงการแพทย์ โดยมีชื่อเสียงโดดเด่นที่สุดในด้านยารักษาโรคเบาหวาน ยาควบคุมน้ำหนัก (เช่น Mounjaro และ Zepbound) รวมถึงยารักษาโรคอัลไซเม...",
+        markdown: `# Eli Lilly and Company (LLY) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Eli Lilly and Company เป็นบริษัทยักษ์ใหญ่ด้านเภสัชกรรมและการแพทย์ระดับโลกที่มุ่งเน้นการค้นคว้า วิจัย และพัฒนาและจัดจำหน่ายนวัตกรรมยารักษาโรคที่ปฏิวัติวงการแพทย์ โดยมีชื่อเสียงโดดเด่นที่สุดในด้านยารักษาโรคเบาหวาน ยาควบคุมน้ำหนัก (เช่น Mounjaro และ Zepbound) รวมถึงยารักษาโรคอัลไซเมอร์และโรคมะเร็ง โครงสร้างรายได้หลักกว่าครึ่งขับเคลื่อนด้วยยากลุ่มรักษาโรคอ้วนและเบาหวานที่กำลังมีความต้องการเติบโตล้นหลามทั่วโลก
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตแบบก้าวกระโดดร้อนแรงที่สุดในกลุ่มบริษัทยารักษาระดับโลก จากกระแสความต้องการถล่มทลายในตัวยาควบคุมโรคอ้วนที่กลายเป็นกระแสหลักของสังคมยุคใหม่
+- **อัตรากำไร (Margin trend):** ภาพรวมอัตรากำไรขั้นต้นขยายตัวแตะระดับสูงกว่า 78-80% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) บ่งบอกอำนาจการเจรจาต่อรองและการผูกขาดสิทธิบัตรยาขั้นสูงที่มีประสิทธิภาพรักษาสูงสุด
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีโครงสร้างทางการเงินที่แข็งแกร่งและมีความยืดหยุ่นทางการเงินสูง มีกระแสเงินสดหลั่งไหลเข้ามาอย่างต่อเนื่องสม่เสมอเพียบพร้อมต่อการขยายฐานโรงงานผลิตยาสูตรเฉพาะตัว
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการทุ่มงบประมาณก้อนใหญ่เข้าสู่การวิจัยและพัฒนาทางคลินิก (R&D) และเร่งลงทุนขยายกำลังการผลิตโรงงานผลิตยาฉีดเพื่อแก้ปัญหาสินค้าขาดแคลนในตลาดโลก
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Cornered Resource & Patent Protection:** สิทธิบัตรและสูตรโมเลกุลยาฉีดลดน้ำหนักและเบาหวานทำหน้าที่เป็นกำแพงสิทธิประโยชน์ในการครองความได้เปรียบแบบเกือบผูกขาดคู่ร่วมกับ Novo Nordisk
+- **Massive Addressable Market (Branding & Scale Economies):** แนวโน้มจำนวนประชากรที่มีภาวะน้ำหนักเกินและผู้ป่วยเบาหวานทั่วโลกขยายตัวต่อเนื่อง ทำให้เป็นตลาดเป้าหมายที่แทบไม่มีวันอิ่มตัวในระยะทศวรรษข้างหน้า
+
+**Bear case (มุมมองลบ):**
+- **ความล้มเหลวในการขยายกำลังการผลิต:** ความซับซ้อนของสายงานผลิตและขั้นตอนบรรจุเข็มฉีดยาอัจฉริยะ ทำให้ประสบปัญหาสินค้าขาดตลาด หากขยายโรงงานไม่ทันตามแผนงานอาจเปิดช่องให้คู่แข่งรายอื่นเข้ามาแย่งเค้กตลาดหลัก
+- **การจำกัดเพดานราคายาและการบังคับเคลมประกันภัย:** ความเสี่ยงจากการแทรกแซงราคาจากรัฐบาลสหรัฐฯ ผ่านมาตรการ Medicare หรือการที่บริษัทประกันภัยปฏิเสธการร่วมจ่ายเงินค่ายาลดน้ำหนักเนื่องจากเป็นยาราคาแพง
+
+### 5. Kill conditions
+- เกิดเหตุการณ์วิกฤตความบกพร่องด้านความปลอดภัยของยาลดน้ำหนักหรือยาฉีดเบาหวานตัวหลัก (เช่น ตรวจพบผลข้างเคียงร้ายแรงระดับเป็นพิษถาวร) จนถูกบังคับเพิกถอนสิทธิ์จาก อย. ทั่วโลก
+- อัตรารายได้ขยายตัวต่ำกว่าระดับ 10% หรืออัตรากำไรจากการดำเนินงานลดลงอย่างถาวรเนื่องจากการหมดอายุสิทธิบัตรยาหลัก (Patent Cliff) โดยที่ไม่มีตัวยาปฏิวัติใหม่มาทดแทน
+
+### 6. What to ask before owning it
+- ความเร็วในการอนุมัติยารักษาโรคอัลไซเมอร์ตัวใหม่ (เช่น Donanemab) จะสามารถเข้ามาเป็นอีกหนึ่งเสาหลักที่สร้างรายได้มหาศาลเคียงคู่กับยากลุ่มควบคุมน้ำหนักได้รวดเร็วเพียงใด?
+- มาตรการปกป้องและรับมือกับยาลอกเลียนแบบประเภทสามัญ (Generics) และยาลดน้ำหนักสูตรผสมปลอมนอกระบบจะช่วยรักษาระดับฐานราคาพรีเมียมของ Eli Lilly ไว้ได้นานแค่ไหน?
+`
+      },
+      {
+        ticker: "JNJ",
+        companyName: "Johnson & Johnson",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#d11919",
+        snapshot: "Johnson & Johnson (JNJ) เป็นยักษ์ใหญ่ด้านการดูแลสุขภาพและการแพทย์ระดับโลกที่เน้นการดำเนินงานใน 2 ส่วนหลักคือ ส่วนนวัตกรรมยาและชีวเวชภัณฑ์ (Innovative Medicine) และส่วนอุปกรณ์การแพทย์ขั้นสูง (MedTech) จำหน่ายให้แก่โรงพยาบาลและสถาบันการแพทย์ทั่วโลก โครงสร้างรายได้หลักสร้างสรรค์จากย...",
+        markdown: `# Johnson & Johnson (JNJ) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Johnson & Johnson (JNJ) เป็นยักษ์ใหญ่ด้านการดูแลสุขภาพและการแพทย์ระดับโลกที่เน้นการดำเนินงานใน 2 ส่วนหลักคือ ส่วนนวัตกรรมยาและชีวเวชภัณฑ์ (Innovative Medicine) และส่วนอุปกรณ์การแพทย์ขั้นสูง (MedTech) จำหน่ายให้แก่โรงพยาบาลและสถาบันการแพทย์ทั่วโลก โครงสร้างรายได้หลักสร้างสรรค์จากยากลุ่มรักษาโรคมะเร็ง โรคภูมิคุ้มกัน และอุปกรณ์ผ่าตัดอัจฉริยะ
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างมั่นคงต่อเนื่องอย่างมีเสถียรภาพสูง โดยได้อานิสงส์สำคัญจากการแยกส่วนธุรกิจสินค้าอุปโภคบริโภคทั่วไป (Kenvue) ออกไปสำเร็จ ทำให้กลับมาโฟกัสธุรกิจนวัตกรรมการแพทย์มาร์จิ้นสูงได้เต็มตัว
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นรวมสูงเฉลี่ย 67-69% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบผลิตชิ้นส่วนเทคโนโลยีการแพทย์ที่ซับซ้อนสูงและสูตรยาพิเศษที่จดลิขสิทธิ์เฉพาะตัว
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีความมั่นคงระดับสูงสุดในประวัติศาสตร์ ได้รับการจัดอันดับความน่าเชื่อถือระดับ AAA สูงกว่ารัฐบาลสหรัฐฯ มีเงินสดสำรองมหาศาลและหนี้สินที่อยู่ในสัดส่วนปลอดภัยสูงสุด
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการวิจัยพัฒนายาสูตรใหม่และการเข้าซื้อกิจการเครื่องมือแพทย์ล้ำสมัย (M&A) พร้อมโครงการซื้อหุ้นคืนและเงินปันผลที่ปรับเพิ่มขึ้นสม่ำเสมอทุกปีต่อเนื่องนานกว่า 60 ปี
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Cornered Resource & High Switching Costs:** อุปกรณ์การแพทย์และระบบหุ่นยนต์ผ่าตัดของ MedTech มี Switching Costs สูงลิ่ว เนื่องจากศัลยแพทย์ต้องผ่านการฝึกอบรมการใช้งานจนเชี่ยวชาญพิเศษ ทำให้โรงพยาบาลแทบไม่สับเปลี่ยนยี่ห้อ
+- **Diverse Healthcare Pipeline (Branding & Process Power):** การมีขวดยาและตัวยาสำคัญหลายสิบแบรนด์ช่วยกระจายความเสี่ยงจากการหมดอายุสิทธิบัตรยาเดี่ยวได้เป็นอย่างดีและสร้างรายรับที่เหนียวแน่น
+
+**Bear case (มุมมองลบ):**
+- **มหากาพย์คดีความฟ้องร้องเรื่องแป้งฝุ่น Talcum:** ภาระหนี้สินและการตั้งสำรองงบประมาณชดเชยค่าเสียหายทางกฎหมายกรณีคดีฟ้องร้องว่าแป้งฝุ่นมีสารปนเปื้อนใยหิน ซึ่งเป็นคดีสะสมยาวนานที่ยังเป็นปัจจัยถ่วงกระแสเงินสดระยะสั้น
+- **การเจรจาลดราคายากับภาครัฐ (Price Controls):** การได้รับผลกระทบจากกฎหมาย Inflation Reduction Act (IRA) ของสหรัฐฯ ที่เปิดทางให้กระทรวงสาธารณสุขเข้ามาเปิดโต๊ะเจรจาขอลดราคายาหลักที่มีมูลค่าขายสูง
+
+### 5. Kill conditions
+- มีข้อสรุปคดีความแป้งฝุ่นที่บีบให้ JNJ ต้องจ่ายเงินชดเชยค่าเสียหายรวมสูงกว่ามูลค่า 1.5 หมื่นล้านดอลลาร์สหรัฐในคราวเดียวจนสะเทือนระดับเรตติ้งความน่าเชื่อถือ AAA ของงบดุล
+- นวัตกรรมยารักษามะเร็งตัวหลักถูกเพิกถอนสิทธิบัตรก่อนกำหนด หรือผลลัพธ์การทดลองทางคลินิกขั้นสุดท้ายล้มเหลวต่อเนื่องกันเกิน 3 โครงการใหญ่
+
+### 6. What to ask before owning it
+- อัตราการเติบโตของการขายเครื่องมือแพทย์ MedTech และหุ่นยนต์ช่วยผ่าตัดอัจฉริยะ (เช่น Ottava) จะสามารถก้าวขึ้นมาเป็นผู้นำตลาดสู้กับคู่แข่งเบอร์หนึ่งได้จริงในทศวรรษนี้หรือไม่?
+- กลยุทธ์การบุกเข้าซื้อกิจการชีวเภสัชภัณฑ์รายย่อยรอบตัวจะสามารถทดแทนช่วงเวลาสูญเสียสิทธิบัตรยาสำคัญอย่าง Stelara ได้ทันเวลาเพียงใด?
+`
+      },
+      {
+        ticker: "NKE",
+        companyName: "Nike, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#111111",
+        snapshot: "Nike, Inc. เป็นแบรนด์ผลิตภัณฑ์กีฬา เครื่องแต่งกาย และอุปกรณ์กีฬาระดับไอคอนที่ใหญ่ที่สุดในโลก โดยออกแบบและทำตลาดรองเท้าวิ่ง รองเท้าบาสเกตบอล และเครื่องแต่งกายไลฟ์สไตล์ระดับพรีเมียม โครงสร้างรายได้หลักมาจากการค้าส่งให้ตัวแทนจำหน่ายพันธมิตรและการค้าปลีกโดยตรงผ่านหน้าร้านและออนไลน์ขอ...",
+        markdown: `# Nike, Inc. (NKE) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Nike, Inc. เป็นแบรนด์ผลิตภัณฑ์กีฬา เครื่องแต่งกาย และอุปกรณ์กีฬาระดับไอคอนที่ใหญ่ที่สุดในโลก โดยออกแบบและทำตลาดรองเท้าวิ่ง รองเท้าบาสเกตบอล และเครื่องแต่งกายไลฟ์สไตล์ระดับพรีเมียม โครงสร้างรายได้หลักมาจากการค้าส่งให้ตัวแทนจำหน่ายพันธมิตรและการค้าปลีกโดยตรงผ่านหน้าร้านและออนไลน์ของตนเอง (Nike Direct)
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** มีทิศทางชะลอตัวลงเล็กน้อยและอยู่ในช่วงฟื้นฟูปรับฐานกลยุทธ์ จากประเด็นการมุ่งเน้นช่องทางขายตรง (DTC) มากเกินไปจนละเลยร้านค้าพันธมิตรดั้งเดิมและการขาดนวัตกรรมที่น่าตื่นเต้นในรุ่นปัจจุบัน
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นเฉลี่ยระดับ 43-45% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบจัดจำหน่ายสินค้าที่มีราคาพรีเมียม แม้จะมีแรงกดดันจากการตัดราคาล้างสต็อกสินค้าในบางฤดูกาล
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีงบดุลที่สมบูรณ์ มีกระแสเงินสดอิสระที่พึ่งพาได้สูง มีทรัพย์สินแบรนด์ที่มีค่าและหนี้สินต่ำพร้อมรองรับการปฏิรูปกลยุทธ์ระยะยาว
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการลงทุนกับเทคโนโลยีดีไซน์รองเท้ารุ่นใหม่และการขยายตลาดต่างแดน พร้อมซื้อหุ้นคืนและเงินปันผลที่ปรับเพิ่มขึ้นสม่ำเสมอต่อเนื่องยาวนานกว่า 20 ปี
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding Power & Cultural Monopoly:** โลโก้ Swoosh และความผูกพันของแบรนด์กับตำนานนักกีฬาระดับโลกสร้างมูลค่าทางใจพรีเมียม ทำให้ผู้คนยินดีจ่ายแพงกว่าเพื่อภาพลักษณ์ที่ดี
+- **New Leadership & Product Innovation Cycle (Scale Economies & Process Power):** การดึงผู้บริหารคร่ำหวอดคนเก่ากลับมากุมบังเหียนและการหันกลับมาโฟกัสดีลเลอร์ร้านค้าส่งพันธมิตรมีแนวโน้มช่วยดึงส่วนแบ่งตลาดยอดขายรองเท้ากีฬากลับคืนมาอย่างราบรื่น
+
+**Bear case (มุมมองลบ):**
+- **การสูญเสียส่วนแบ่งตลาดให้แก่แบรนด์คู่แข่งหน้าใหม่ที่มาแรง:** การถูกแย่งชิงความนิยมในกลุ่มรองเท้าวิ่งประสิทธิภาพสูงจากแบรนด์น้องใหม่ที่มีนวัตกรรมเฉพาะตัวสูง (เช่น On Holding และ Hoka) เนื่องจากรองเท้า Nike ขาดความสดใหม่ทางดีไซน์
+- **การชะลอตัวของการจับจ่ายของผู้บริโภคในจีนและอเมริกา:** ความอ่อนไหวต่อระดับเงินเฟ้อและการประหยัดค่าใช้จ่ายฟุ่มเฟือยของประชากรวัยรุ่น ซึ่งเป็นกลุ่มลูกค้าเป้าหมายหลักของการสะสมรองเท้าผ้าใบแฟชั่นพรีเมียม
+
+### 5. Kill conditions
+- ส่วนแบ่งทางการตลาดในกลุ่มรองเท้าวิ่งสายประสิทธิภาพสูง (Performance Running) ทั่วโลกปรับตัวลดต่ำลงอย่างต่อเนื่องเป็นเวลาเกิน 4 ไตรมาสเนื่องจากการสูญเสียความเชื่อมั่นด้านเทคโนโลยีดีไซน์
+- อัตรากำไรขั้นต้นรวมของแบรนด์ดิ่งต่ำกว่าระดับ 38% สะท้อนถึงภาวะเสื่อมความนิยมของสินค้าจนต้องหั่นราคาล้างสต็อกอย่างถาวรในตลาดหลัก
+
+### 6. What to ask before owning it
+- กลยุทธ์การรักษาสมดุลระหว่างช่องทางขายหน้าร้าน DTC ของตนเองกับการประสานงานร้านค้าส่งพันธมิตรดั้งเดิมจะสามารถกู้คืนความพึงพอใจและการกระจายสินค้าได้ทรงพลังดังเดิมได้รวดเร็วเพียงใด?
+- นวัตกรรมรองเท้าวิ่งรุ่นใหม่และโครงสร้างพื้นฐานการรองรับกระแทกยุคใหม่จะสร้างเสียงฮือฮาในกลุ่มนักกีฬาอาชีพเพื่อสยบแบรนด์คู่แข่งเกิดใหม่ได้สำเร็จหรือไม่?
+`
+      },
+      {
+        ticker: "LVMUY",
+        companyName: "LVMH Moët Hennessy Louis Vuitton SE",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1 (ล่าสุด)",
+        badgeColor: "#c5a059",
+        snapshot: "LVMH Moët Hennessy Louis Vuitton SE เป็นอาณาจักรแบรนด์สินค้าหรูหราพรีเมียมที่ใหญ่ที่สุดในโลกจากฝรั่งเศส โดยถือครองพอร์ตโฟลิโอแบรนด์ระดับไอคอนกว่า 75 แบรนด์ใน 5 กลุ่มหลัก เช่น Louis Vuitton, Dior, Fendi, Tiffany & Co., Bulgari, Sephora และแชมเปญชั้นเลิศ Moët & Chandon โครงสร้างราย...",
+        markdown: `# LVMH Moët Hennessy Louis Vuitton SE (LVMUY) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+LVMH Moët Hennessy Louis Vuitton SE เป็นอาณาจักรแบรนด์สินค้าหรูหราพรีเมียมที่ใหญ่ที่สุดในโลกจากฝรั่งเศส โดยถือครองพอร์ตโฟลิโอแบรนด์ระดับไอคอนกว่า 75 แบรนด์ใน 5 กลุ่มหลัก เช่น Louis Vuitton, Dior, Fendi, Tiffany & Co., Bulgari, Sephora และแชมเปญชั้นเลิศ Moët & Chandon โครงสร้างรายได้หลักขับเคลื่อนด้วยส่วนงานแฟชั่นและเครื่องหนัง (Fashion & Leather Goods) ซึ่งมีพลังอำนาจในการดึงดูดกระแสเงินสดระดับสูงเยี่ยม
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างยั่งยืนในระยะยาวจากฐานลูกค้าผู้มีสินทรัพย์มั่งคั่งสูงทั่วโลก (HNWIs) แม้จะมีความผันผวนชั่วคราวตามสภาวะเศรษฐกิจในภูมิภาคหลักอย่างเอเชียและยุโรป
+- **อัตรากำไร (Margin trend):** รักษาอัตรากำไรขั้นต้นระดับสูงสุดเป็นประวัติการณ์เฉลี่ยประมาณ 68-69% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากระบบผลิตภายในตนเองและการไม่มีนโยบายการจัดลดราคาใด ๆ เลยเพื่อรักษาภาพลักษณ์หรูพรีเมียมถาวร
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** มีฐานะทางการเงินที่แกร่งเป็นเอกลักษณ์ มีกระแสเงินสดอิสระท่วมท้นในการเข้าทำดีลซื้อกิจการระดับมรดกโลกและมีหนี้สินสุทธิในกรอบควบคุมอย่างยอดเยี่ยม
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการซื้อสปอนเซอร์อสังหาริมทรัพย์ระดับทำเลทองทั่วโลกและการพัฒนากิจการแบรนด์ย่อย พร้อมจ่ายเงินปันผลที่ปรับเพิ่มขึ้นสม่ำเสมอด้วยความระมัดระวังทางการคลังสูงสุด
+
+### 3. Latest earnings
+- ไม่พบเอกสารบันทึกประชุมผลประกอบการล่าสุดใน sources/
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding Power & Heritage Moat:** ประวัติศาสตร์ยาวนานหลายทศวรรษหรือนับร้อยปีของแบรนด์อย่าง Louis Vuitton หรือ Dior ทำหน้าที่เป็นสิ่งกีดขวางที่ไม่มีคู่แข่งหน้าใหม่ใดสร้างขึ้นมาทดแทนได้เลย
+- **Ultra-HNWIs Resilience & Global Pricing Power (Scale Economies & Process Power):** ลูกค้าหลักเป็นผู้มีฐานะร่ำรวยเป็นพิเศษซึ่งไม่ได้รับผลกระทบจากสภาวะขัดสนทางการเงิน ทำให้ LVMH สามารถปรับขึ้นราคากระเป๋าและเครื่องประดับได้ต่อเนื่องโดยไม่กระทบความต้องการซื้อ
+
+**Bear case (มุมมองลบ):**
+- **การพึ่งพากำลังซื้อและการบริโภคของนักท่องเที่ยวชาวจีน:** รายได้หลักมีความอ่อนไหวสูงต่อสภาพเศรษฐกิจ นโยบายอัตราแลกเปลี่ยน และข้อบังคับการเดินทางไปต่างแดนของกลุ่มผู้บริโภคระดับกลางและระดับบนชาวจีน
+- **ความเสี่ยงในการเปลี่ยนผ่านนักออกแบบระดับหัวกะทิ:** อัตลักษณ์และความนิยมของสินค้าขึ้นอยู่กับวิสัยทัศน์และการออกแบบของดีไซเนอร์ชั้นแนวหน้า หากเกิดเหตุเปลี่ยนดีไซเนอร์หลักแล้วล้มเหลวอาจดึงความต้องการซื้อในคอลเลคชันปัจจุบันดิ่งลง
+
+### 5. Kill conditions
+- แบรนด์ชูโรงหลักอย่าง Louis Vuitton หรือ Dior สูญเสียความพรีเมียมและความดึงดูดใจเชิงวัฒนธรรมอย่างถาวร (เช่น การลดคุณค่าแบรนด์ด้วยการลดราคาจำหน่ายหรือทำสินค้าแมสจนเกรดเสีย)
+- อัตรากำไรขั้นต้นรวมปรับลดลงต่ำกว่าระดับ 60% ติดต่อกัน 3 ไตรมาส บ่งบอกถึงภาวะสูญเสีย Pricing Power และต้นทุนผลิต/ค่าเช่าช็อปหรูในทำเลทองขยายตัวเกินคุมไหว
+
+### 6. What to ask before owning it
+- ทิศทางการสืบทอดตำแหน่งอาณาจักร LVMH ของทายาทตระกูล Arnault จะสามารถรักษาความเป็นปึกแผ่น วิสัยทัศน์ความคุ้มค่า และการจัดสรรงบประมาณอย่างสมบูรณ์ไร้รอยต่อในอนาคตได้ดีเพียงใด?
+- การเข้าบุกธุรกิจโรงแรมและสปาหรูระดับบนสุด (Hospitality) จะช่วยต่อยอดความผูกพันของแบรนด์กับไลฟ์สไตล์ผู้ใช้งานได้คุ้มค่าเงินลงทุนระดับพรีเมียมหรือไม่?
+`
+      },
+{
+        ticker: "AAPL",
+        companyName: "Apple Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v4 (ล่าสุด)",
+        badgeColor: "#00d2ff",
+        snapshot: "Apple Inc. เป็นผู้นำระดับโลกด้านการออกแบบ ผลิต และจัดจำหน่ายอุปกรณ์อิเล็กทรอนิกส์สำหรับผู้บริโภคระดับพรีเมียม คอมพิวเตอร์ส่วนบุคคล และโซลูชันบริการดิจิทัลครบวงจร...",
+        markdown: `# Apple Inc. (AAPL) Investment Research Brief
+
+---
+
+*นี่คือรายงานสรุปข้อมูลเพื่อการศึกษาและวิเคราะห์เชิงลึกเชิงโครงสร้างทางธุรกิจตามสไตล์การลงทุนคุณค่าระยะยาว ห้ามใช้เป็นข้อเสนอแนะในการซื้อหรือขายหลักทรัพย์โดยเด็ดขาด*
+
+---
+
+### 1. Company snapshot
+Apple Inc. เป็นผู้นำระดับโลกด้านการออกแบบ ผลิต และจัดจำหน่ายอุปกรณ์อิเล็กทรอนิกส์สำหรับผู้บริโภคระดับพรีเมียม คอมพิวเตอร์ส่วนบุคคล และโซลูชันบริการดิจิทัลครบวงจร โดยมีฐานลูกค้าหลักเป็นกลุ่มผู้บริโภคทั่วไป ภาคธุรกิจ และสถาบันการศึกษาทั่วโลก โครงสร้างรายได้หลักในรอบปีมาจากการขายอุปกรณ์ฮาร์ดแวร์โดยเฉพาะอย่างยิ่ง iPhone ซึ่งสร้างสัดส่วนรายได้หลักถึง 52% ของรายได้ทั้งหมด ตามมาด้วยส่วนงานบริการ (Services) ที่ประกอบด้วย App Store, Apple Music, iCloud และ Apple Pay ซึ่งเติบโตสร้างสถิติรายได้สูงสุดใหม่อย่างต่อเนื่อง คิดเป็นสัดส่วน 22% ของรายได้หลักบริษัท
+
+### 2. Fundamentals signal
+- **ทิศทางรายได้ (Revenue trend):** เติบโตอย่างมั่นคงและต่อเนื่อง โดยมีปัจจัยสนับสนุนหลักมาจากความแข็งแกร่งอย่างยิ่งของกลุ่มธุรกิจบริการที่มีลักษณะสร้างรายได้แบบเกิดซ้ำ (Recurring revenue) ซึ่งช่วยปรับฐานกระแสเงินสดของบริษัทให้มีความสม่ำเสมอและลดความผันผวนจากวัฏจักรการเปลี่ยนฮาร์ดแวร์ของผู้บริโภค
+- **อัตรากำไร (Margin trend):** ภาพรวมอัตรากำไรขั้นต้นขยายตัวในระดับสูงแตะระดับ 46.2% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) จากโครงสร้างธุรกิจบริการที่มีอัตรากำไรขั้นต้นสูงเป็นพิเศษถึง 73.5% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) ซึ่งเป็นสัดส่วนที่สูงกว่าฝั่งฮาร์ดแวร์ที่มีอัตรากำไรขั้นต้น 36.5% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) เป็นอย่างมาก
+- **ความแข็งแกร่งของงบการเงิน (Balance sheet):** งบดุลมีความแข็งแกร่งสูงสุดและบริหารจัดการความเสี่ยงด้านการเงินอย่างประณีต มีกระแสเงินสดอิสระปริมาณมหาศาลเพื่อใช้ในการพัฒนาวิจัยและเผชิญหน้ากับความไม่แน่นอนทางเศรษฐกิจ โดยรักษาระดับโครงสร้างหนี้สินให้อยู่ในกรอบที่สามารถจัดสรรบริหารได้อย่างมีประสิทธิภาพสูงสุด
+- **การจัดสรรเงินทุน (Capital allocation):** มุ่งเน้นการสร้างผลตอบแทนสูงสุดให้กับผู้ถือหุ้นในระยะยาวอย่างมั่นคง ผ่านนโยบายซื้อหุ้นคืน (Share Repurchases) มูลค่ากว่า 90 พันล้านเหรียญ (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) และรักษาประวัติการจ่ายเงินปันผลที่ต่อเนื่องสอดคล้องกับแนวคิดการลงทุนเน้นคุณค่าระยะยาว
+
+### 3. Latest earnings
+- ยอดขาย iPhone พุ่งทะยานสร้างประวัติการณ์ใหม่ที่ระดับ 61.2 พันล้านเหรียญ หรือคิดเป็นการขยายตัวเติบโตขึ้น 8% จากปีที่ผ่านมา โดยได้รับแรงกระตุ้นโดดเด่นเป็นพิเศษจากการขยายตัวแบบก้าวกระโดดในตลาดเอเชียใต้และประเทศอินเดีย (แหล่งที่มา: sources/AAPL/q1-2026-call.md)
+- ส่วนแบ่งรายได้จากบริการ (Services revenue) แตะระดับสูงสุดใหม่เป็นประวัติการณ์ที่ 24.1 พันล้านเหรียญ เพิ่มขึ้น 12% โดยมีแรงขับเคลื่อนเด่นจากการเติบโตใน App Store และยอดสมัครใช้บริการ Apple TV+ (แหล่งที่มา: sources/AAPL/q1-2026-call.md)
+- อัตรากำไรขั้นต้น (Gross margin) รวมของบริษัทในไตรมาสล่าสุดแสดงผลงานแข็งแกร่งอยู่ที่ระดับ 45.3% ซึ่งอยู่ในเกณฑ์ที่สูงกว่าเป้าหมายที่ฝ่ายบริหารคาดการณ์ไว้ล่วงหน้าเล็กน้อย (แหล่งที่มา: sources/AAPL/q1-2026-call.md)
+- ฝ่ายบริหารส่งสัญญาณถึงความพร้อมที่จะเปิดตัวแผนงานการพัฒนาระบบปัญญาประดิษฐ์เชิงสร้างสรรค์ตัวใหม่ในชื่อ 'Apple Intelligence Pro' ในช่วงปลายปีนี้ ซึ่งคาดว่าจะเป็นกลไกหลักในการขับเคลื่อนและสร้างคลื่นการเติบโตครั้งใหม่ในอนาคต (แหล่งที่มา: sources/AAPL/q1-2026-call.md)
+
+### 4. Bull case / Bear case
+**Bull case (มุมมองบวก):**
+- **Branding & Switching Costs (แบรนด์ทรงพลังและระบบนิเวศล็อกตัว):** Apple มีแต้มต่อสูงสุดจากอำนาจแบรนด์พรีเมียม (Branding Power) และโครงสร้างการสับเปลี่ยนย้ายค่ายที่มีภาระต้นทุนสูง (Switching Costs) ด้วยความผูกพันของระบบนิเวศปิด (Walled Garden) ทำให้ผู้บริโภคยากที่จะย้ายออกจากบริการของ Apple ไปยังระบบอื่น ซึ่งเอื้อต่อการทำกำไรอย่างยั่งยืน
+- **Network Economies (เอฟเฟกต์เครือข่ายแพลตฟอร์ม):** โครงสร้างแพลตฟอร์ม App Store ทำให้เกิดพลังแห่งการสะสมเครือข่ายที่มีคุณค่าอย่างยิ่งระหว่างผู้สร้างเนื้อหา/ผู้พัฒนาซอฟต์แวร์นับล้านรายและฐานผู้ใช้งานขนาดใหญ่ ยิ่งระบบโตขึ้น ยิ่งหนุนนำการใช้จ่ายในงานบริการเพิ่มขึ้นเป็นเงาตามตัว
+- **AI Growth Driver Anticipation:** โครงการพัฒนา AI และ Siri เวอร์ชันปฏิวัติใหม่ในงาน WWDC 2026 เดือนมิถุนายน พร้อมด้วยบริการเสริมระดับพรีเมียม 'Apple Intelligence Pro' ปลายปี มีศักยภาพที่จะเป็นตัวเร่งสำคัญ (Catalyst) ในการสร้างวงจรอัปเกรดเครื่องใหม่ครั้งใหญ่ (Supercycle) และยกระดับอัตราการเติบโตของรายได้ค่าธรรมเนียมบริการในอนาคต
+
+**Bear case (มุมมองลบ):**
+- **Regulatory Pressures on Closed Ecosystem:** ปัญหาการฟ้องร้องทางกฎหมายต่อต้านการผูกขาดตลาด (Antitrust) จากกระทรวงยุติธรรมสหรัฐฯ (DOJ) และการบังคับกฎเกณฑ์ของสหภาพยุโรป (EU DMA) กำลังสั่นคลอนความมั่นคงในอำนาจผูกขาดและจุดเด่นด้าน Switching Costs ของระบบนิเวศปิด เช่น การบังคับให้เปิดทางเข้าติดตั้งภายนอก (Sideloading) และการบีบให้ยกเว้นการเก็บค่าธรรมเนียมบนระบบ Apple Pay ซึ่งอาจบั่นทอนสัดส่วนทำกำไรของงานบริการอย่างหลีกเลี่ยงไม่ได้
+- **Saturated Hardware Market & Valuation Pressure:** ตลาดสมาร์ทโฟนทั่วโลกมาถึงจุดที่อิ่มตัวสูง ความต้องการเครื่องใหม่อาจขยายระยะเวลาออกไปจากเดิม ประกอบกับราคาหุ้นปัจจุบันซื้อขายบนฐานความคาดหวังระดับสูง (สะท้อนจากราคาเป้าหมายเฉลี่ยของตลาดที่ประมาณ $307–$313 และเป้าหมายขาขึ้นสูงสุดที่ $400 จากค่าย Wedbush ในช่วงกลางปี 2026) ความผิดพลาดเพียงเล็กน้อยในห่วงโซ่อุปทานหรือการเติบโตของบริการที่ไม่ได้เป็นไปตามเป้า อาจส่งผลกระทบให้ราคาปรับฐานลงได้อย่างรวดเร็ว
+
+### 5. Kill conditions
+- มีการตัดสินคดีความหรือมาตรการบังคับทางกฎหมายในตลาดหลักของบริษัท ที่ระบุให้ทำลายข้อจำกัดระบบนิเวศปิด Walled Garden อย่างมีนัยสำคัญถาวร เช่น การสั่งห้ามจัดเก็บส่วนแบ่งค่าธรรมเนียม App Store ในอเมริกา หรือบังคับให้แยกส่วนงานระบบปฏิบัติการออกจากการบริการ ซึ่งจะทำให้ Switching Costs และความสามารถในการทำกำไรของ Services พังทลายลง
+- อัตรากำไรขั้นต้นของภาพรวมบริษัทชะลอตัวลงต่อเนื่องกันเป็นเวลา 3 ไตรมาส หรืออัตรากำไรขั้นต้นเฉพาะส่วนของงานบริการ (Services gross margin) ดิ่งลงหลุดระดับ 70% ซึ่งส่งสัญญาณว่าบริษัทเริ่มหมดอำนาจในการเจรจาต่อรองและการตั้งราคาพรีเมียมในตลาด
+- ฐานจำนวนเครื่องที่ใช้งานอยู่ (Active Installed Base) หรือยอดส่วนแบ่งตลาดของ iPhone สัญญาณการหดตัวลงอย่างมีนัยสำคัญในระยะยาว แสดงถึงความเสื่อมถอยทางความนิยมและอำนาจแบรนด์พรีเมียม (Branding Power) ของผลิตภัณฑ์รุ่นใหม่
+
+### 6. What to ask before owning it
+- โครงสร้างรายได้และการเติบโตของธุรกิจบริการ (Services) จะสามารถเติบโตขึ้นมารับน้ำหนักและประคองทิศทางการขยายตัวทดแทนส่วนแบ่งฮาร์ดแวร์ที่อิ่มตัวได้อย่างราบรื่นและยั่งยืนในทศวรรษข้างหน้าจริงหรือไม่?
+- ผลกระทบและความเสียหายทางการเงินจากการถูกฟ้องร้องคดีต่อต้านการผูกขาดทั่วโลก จะกระทบต่อโครงสร้างอัตรากำไรขั้นต้นระดับ 73.5% ของบริการ App Store มากน้อยเพียงใด และมีแผนสำรองอย่างไร?
+- โมเดลปัญญาประดิษฐ์ใหม่อย่าง 'Apple Intelligence Pro' จะสามารถแปรเปลี่ยนเป็นรายได้จากการสมัครบริการ (Subscription fee) เพื่อให้เกิดกระแสเงินสดต่อเนื่อง หรือจะเป็นเพียงคุณสมบัติเสริมเพื่อช่วยกระตุ้นวัฏจักรการเปลี่ยนมือถือรุ่นใหม่เฉย ๆ?
+- นโยบายการย้ายฐานการผลิตและการบริหารโครงสร้างซัพพลายเชนในระยะยาว จะสามารถช่วยควบคุมความเสี่ยงด้านภูมิรัฐศาสตร์โดยไม่บั่นทอนเป้าหมายอัตรากำไรขั้นต้นฝั่งฮาร์ดแวร์ลงได้ดีแค่ไหน?`
+      },
+      {
+        ticker: "AAPL (v3)",
+        companyName: "Apple Inc. (Archived v3)",
+        type: "archived",
+        date: "2026-05-21",
+        version: "v3",
+        badgeColor: "#ffbd59",
+        snapshot: "Apple Inc. (AAPL) เป็นบริษัทเทคโนโลยีชั้นนำระดับโลกที่ออกแบบ ผลิต และทำตลาดอุปกรณ์สื่อสารเคลื่อนที่ คอมพิวเตอร์ส่วนบุคคล และอุปกรณ์เล่นเพลงดิจิทัลแบบพกพา...",
+        markdown: `# Apple Inc. (AAPL) - Research Brief
+
+## 1. Company snapshot
+Apple Inc. (AAPL) เป็นบริษัทเทคโนโลยีชั้นนำระดับโลกที่ออกแบบ ผลิต และทำตลาดอุปกรณ์สื่อสารเคลื่อนที่ คอมพิวเตอร์ส่วนบุคคล และอุปกรณ์เล่นเพลงดิจิทัลแบบพกพา รวมถึงจำหน่ายซอฟต์แวร์ บริการ และโซลูชันเครือข่ายระดับโลก กลุ่มลูกค้าหลักประกอบด้วยผู้บริโภคทั่วไป ภาคธุรกิจขนาดเล็กและกลาง ภาคการศึกษา และหน่วยงานรัฐบาล โครงสร้างรายได้หลักของบริษัทมาจากการขายอุปกรณ์ฮาร์ดแวร์โดยเฉพาะ iPhone (คิดเป็นประมาณ 52% ของรายได้ทั้งหมด) ตามมาด้วยส่วนงานบริการ (Services) เช่น App Store, Apple Music, iCloud และ Apple Pay ซึ่งขยายตัวทำสถิติสูงสุดใหม่และมีสัดส่วนรายได้ที่ 22% ของรายได้หลัก
+
+## 2. Fundamentals signal
+* **ทิศทางรายได้ (Revenue trend):** รายได้รวมมีแนวโน้มขยายตัวอย่างมีเสถียรภาพในระยะยาว แม้ว่ากลุ่มสินค้าฮาร์ดแวร์บางประเภทจะมีความผันผวนตามรอบของผลิตภัณฑ์ แต่ส่วนงานบริการ (Services) เติบโตขึ้นอย่างสม่ำเสมอในลักษณะเส้นตรงต่อเนื่องทุกไตรมาส
+* **อัตรากำไร (Margin trend):** อัตรากำไรขั้นต้น (Gross margin) ในระดับภาพรวมของบริษัทขยายตัวอย่างแข็งแกร่งจนแตะระดับ 46.2% ขับเคลื่อนโดยสัดส่วนรายได้บริการที่มีอัตรากำไรขั้นต้นสูงเป็นประวัติการณ์ถึง 73.5% เทียบกับกลุ่มฮาร์ดแวร์ที่มีอัตรากำไรขั้นต้นอยู่ที่ 36.5% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด)
+* **การจัดสรรเงินทุน (Capital Allocation):** บริษัทให้ความสำคัญกับการสร้างผลตอบแทนที่เป็นเลิศแก่ผู้ถือหุ้น ผ่านโครงการซื้อหุ้นคืน (Share Repurchases) มูลค่ากว่า 90 พันล้านเหรียญสหรัฐต่อรอบปี และการเพิ่มการจ่ายเงินปันผลอย่างสม่ำเสมอ โดยคงโครงสร้างงบการเงินและรักษาระดับหนี้สินในจุดที่มีเสถียรภาพสูงสุด
+
+## 3. Latest earnings
+* ยอดขาย iPhone ในไตรมาสนี้พุ่งสูงเป็นประวัติการณ์ที่ 61.2 พันล้านเหรียญสหรัฐ ขยายตัวเติบโตขึ้น 8% จากไตรมาสเดียวกันของปีก่อน นำโดยการเติบโตแบบก้าวกระโดดอย่างโดดเด่นในกลุ่มตลาดเอเชียใต้และประเทศอินเดีย (แหล่งข้อมูล: sources/AAPL/q1-2026-call.md)
+* รายได้จากส่วนงานบริการ (Services revenue) แตะระดับสูงสุดเป็นสถิติใหม่ที่ 24.1 พันล้านเหรียญสหรัฐ เติบโตเพิ่มขึ้น 12% โดยได้แรงขับเคลื่อนหลักจากฐานผู้ใช้งาน App Store และบริการสตรีมมิ่งอย่าง Apple TV+ (แหล่งข้อมูล: sources/AAPL/q1-2026-call.md)
+* อัตรากำไรขั้นต้น (Gross margin) ในไตรมาสนี้ทำผลงานได้แข็งแกร่งอย่างยิ่งโดยรายงานออกมาอยู่ที่ 45.3% ซึ่งสูงกว่าระดับเป้าหมายที่ฝ่ายบริหารประเมินไว้เล็กน้อย (แหล่งข้อมูล: sources/AAPL/q1-2026-call.md)
+* บริษัทเตรียมแผนการยกระดับขีดความสามารถด้าน AI ด้วยการเปิดตัวแผนงานพัฒนา Generative AI ตัวใหม่ในชื่อ 'Apple Intelligence Pro' ในช่วงปลายปีนี้ ซึ่งได้รับการคาดหวังเป็นปัจจัยเร่งผลงานในอนาคต (แหล่งข้อมูล: sources/AAPL/q1-2026-call.md)
+
+## 4. Bull case / Bear case
+### Bull case (กรณีขาขึ้น)
+* **Branding & Switching Costs (ตามแนวคิด Helmer's 7 Powers):** ความทรงอิทธิพลของแบรนด์ Apple ทำให้บริษัทมีอำนาจการกำหนดราคาในตลาดพรีเมียม (Branding power) ประกอบกับต้นทุนในการเปลี่ยนย้ายค่าย (Switching Costs) ที่สูงมาก เนื่องจากพฤติกรรมการใช้งาน ข้อมูล บริการ และแอปพลิเคชันของผู้ใช้งานผูกติดเข้ากับระบบนิเวศ iOS อย่างสมบูรณ์ ทำให้โอกาสที่ฐานลูกค้าจะย้ายออกจากระบบมีต่ำมาก
+* **Network Economies & AI Catalyst:** แพลตฟอร์มสองด้าน (Two-sided platform) อย่าง App Store มี Network Economies ที่แข็งแกร่ง คาดว่าความคืบหน้าของฟีเจอร์ AI ใหม่ ๆ ในงาน WWDC 2026 และความสนใจต่อ 'Apple Intelligence Pro' จะเป็นแรงดึงดูดสำคัญให้ทั้งนักพัฒนาและฐานผู้ใช้อัปเกรดฮาร์ดแวร์เพื่อรองรับขีดความสามารถใหม่นี้ ซึ่งจะสร้างการเติบโตรอบใหม่ให้แก่ระบบนิเวศ
+
+### Bear case (กรณีขาลง)
+* **ประเด็นกฎหมายผูกขาดและการควบคุมของรัฐ:** ความเสี่ยงจากการดำเนินคดีคดีผูกขาดทางการค้าของกระทรวงยุติธรรมสหรัฐฯ (DOJ) และเดดไลน์การบังคับใช้กฎหมาย Digital Markets Act (DMA) ของยุโรปในวันที่ 1 มิถุนายน 2026 ที่อาจบีบให้ Apple ต้องเปิดกว้างการใช้งานระบบชำระเงินนอก App Store ซึ่งจะกระทบต่ออัตรากำไรกลุ่มบริการที่สูงถึง 73.5% ของบริษัท
+* **มูลค่าหุ้นที่ตึงตัวและแรงกดดันทางต้นทุน:** ราคาหุ้นของ Apple ทำสถิติสูงสุดใหม่ (All-time high) ทะลุระดับ $300 ในช่วงกลางเดือนพฤษภาคม 2026 ส่งผลให้มูลค่าหุ้น (Valuation) ตึงตัวจนนักวิเคราะห์บางส่วนปรับลดคำแนะนำเป็น "ถือ" (Hold) ประกอบกับต้นทุนของหน่วยความจำ (Memory cost) ที่ปรับตัวสูงขึ้น และความเสี่ยงในการจัดโปรโมชั่นลดราคาฮาร์ดแวร์เพื่อแข่งขันในประเทศจีน
+
+## 5. Kill conditions
+* อัตรากำไรขั้นต้น (Gross Margin) ของส่วนงานบริการ (Services) ลดลงต่อเนื่องกันมากกว่า 3 ไตรมาส ซึ่งบ่งชี้ว่ามาตรการกำกับดูแลของรัฐบาลทั่วโลกส่งผลกระทบทำลายอำนาจการเก็บส่วนแบ่งค่าธรรมเนียมแพลตฟอร์มอย่างถาวร
+* การเปลี่ยนผ่านตัวผู้นำโดย John Ternus ที่กำลังจะเข้ารับตำแหน่ง CEO ในวันที่ 1 กันยายน 2026 นำไปสู่วิสัยทัศน์หรือการออกผลิตภัณฑ์ด้านปัญญาประดิษฐ์ (AI) ที่ล้มเหลวหรือไม่สอดคล้องกับความคาดหวังของตลาด จนทำให้ยอดเปิดใช้งานอุปกรณ์ (Active Installed Base) ลดลงติดต่อกันอย่างมีนัยสำคัญ
+* คดีฟ้องร้องผูกขาดของกระทรวงยุติธรรมสหรัฐฯ (DOJ) มีคำพิพากษาสิ้นสุดให้ Apple ต้องแยกธุรกิจบริการ หรือห้ามไม่ให้มีการผูกขาดเครื่องมือค้นหาหลัก (เช่น ข้อตกลงกับ Google Search) ซึ่งจะตัดทอนฐานกระแสเงินสดหลักของระบบนิเวศลงอย่างมาก
+
+## 6. What to ask before owning it
+1. การเปลี่ยนผ่านตำแหน่งผู้นำในวันที่ 1 กันยายน 2026 โดยมี John Ternus เข้ามารับตำแหน่ง CEO ต่อจาก Tim Cook จะยังคงรักษาวินัยและความต่อเนื่องของนโยบายการจัดสรรเงินทุน (Capital Allocation) ที่เน้นการซื้อหุ้นคืนและการปันผลสูงสุดให้แก่ผู้ถือหุ้นได้หรือไม่?
+2. คุณมีความพร้อมในการรับมือกับความผันผวนของราคาหุ้นหลังจากการปรับเป้าหมายหรือการปรับคำแนะนำของสถาบันการเงิน รวมถึงประเด็นความกดดันทางกฎหมายและเดดไลน์ DMA ยุโรปในวันที่ 1 มิถุนายน 2026 หรือไม่?
+3. แผนการเปิดตัวฟีเจอร์และระบบประมวลผล 'Apple Intelligence Pro' ในงาน WWDC 2026 จะเป็นตัวผลักดันให้เกิดรอบการอัพเกรดเครื่องใหม่ (Upgrade cycle) ในฝั่งฮาร์ดแวร์ได้จริง หรือจะเป็นเพียงประเด็นทางด้านการตลาดช่วงสั้น ๆ เท่านั้น?
+4. ระดับราคาหุ้นปัจจุบันที่ซื้อขายกันในระดับพรีเมียมที่สูงกว่า $300 มีส่วนเผื่อเพื่อความปลอดภัย (Margin of Safety) ที่หนาแน่นพอสำหรับการรับมือกับความเสี่ยงจากต้นทุนวัสดุอิเล็กทรอนิกส์ (Memory cost) ที่กำลังปรับตัวสูงขึ้นและสภาวะตลาดชะลอตัวในจีนหรือไม่?`
+      },
+      {
+        ticker: "AAPL (v2)",
+        companyName: "Apple Inc. (Archived v2)",
+        type: "archived",
+        date: "2026-05-21",
+        version: "v2",
+        badgeColor: "#ff7c7c",
+        snapshot: "Apple Inc. (AAPL) เป็นบริษัทเทคโนโลยีชั้นนำระดับโลกที่ออกแบบ ผลิต และจำหน่ายอุปกรณ์อิเล็กทรอนิกส์ส่วนบุคคลที่เป็นที่นิยมอย่างสูง เช่น iPhone...",
+        markdown: `# Apple Inc. (AAPL) - Research Brief
+
+## 1. Company snapshot
+Apple Inc. (AAPL) เป็นบริษัทเทคโนโลยีชั้นนำระดับโลกที่ออกแบบ ผลิต และจำหน่ายอุปกรณ์อิเล็กทรอนิกส์ส่วนบุคคลที่เป็นที่นิยมอย่างสูง เช่น iPhone, iPad, Mac และ Apple Watch นอกจากนี้บริษัทยังให้บริการแพลตฟอร์มและบริการดิจิทัลต่างๆ (Services) เช่น App Store, Apple Pay, iCloud และ Apple Music ซึ่งช่วยผูกมัดผู้ใช้ให้อยู่ในระบบนิเวศการใช้งานอย่างเหนียวแน่น รายได้หลักของบริษัทมาจากการขายฮาร์ดแวร์โดยเฉพาะ iPhone และมีสัดส่วนรายได้จากค่าธรรมเนียมและบริการที่เติบโตขึ้นอย่างรวดเร็วและมีอัตรากำไรที่สูง
+
+## 2. Fundamentals signal
+* **ทิศทางรายได้ (Revenue trend):** รายได้รวมของบริษัทมีทิศทางเติบโตอย่างมั่นคงในระยะยาว แม้ว่ายอดขายฮาร์ดแวร์บางส่วนจะมีความผันผวนตามรอบการเปิดตัวผลิตภัณฑ์ใหม่ แต่กลุ่มบริการ (Services) มีทิศทางการเติบโตที่เป็นเส้นตรงและสม่ำเสมอสูงมาก
+* **อัตรากำไร (Margin trend):** อัตรากำไรขั้นต้น (Gross Margin) อยู่ในระดับสูงและขยายตัวต่อเนื่อง โดยได้แรงหนุนสำคัญจากการเติบโตของส่วนแบ่งรายได้กลุ่มบริการที่มีอัตรากำไรขั้นต้นสูงถึงประมาณ 70-75% (ตัวเลข ตรวจสอบใน 10-K ล่าสุด)
+* **ความแข็งแกร่งของงบการเงิน (Balance sheet):** บริษัทมีงบดุลที่แข็งแกร่งเป็นเลิศ มีกระแสเงินสดสำรองมหาศาล แม้จะมีหนี้สินระยะยาวแต่เมื่อหักลบกับเงินสดสะสมแล้วยังมีฐานะการเงินสุทธิเป็นบวกและมั่นคงอย่างยิ่ง
+* **การจัดสรรเงินทุน (Capital allocation):** Apple มีนโยบายจัดสรรเงินทุนเพื่อตอบแทนผู้ถือหุ้นอย่างสม่ำเสมอและมีประสิทธิภาพสูง ผ่านโครงการซื้อหุ้นคืนมูลค่าหลายหมื่นล้านดอลลาร์ในแต่ละปีรวมถึงการจ่ายเงินปันผลที่เติบโตขึ้นอย่างต่อเนื่อง
+
+## 3. Latest earnings
+* ผมไม่แน่ใจว่าผลประกอบการล่าสุดที่มีการประกาศแล้วคือรอบไหน ข้อมูลล่าสุดที่ผมทราบคือรอบ Q1 FY2026 (ไตรมาสสิ้นสุดเดือนธันวาคม 2025) นะครับ
+* Apple รายงานรายได้รวมรายไตรมาสอยู่ที่ประมาณ 119.6 พันล้านดอลลาร์สหรัฐ (ตัวเลข ตรวจสอบใน 10-K ล่าสุด) ซึ่งเติบโตขึ้นเล็กน้อยเมื่อเทียบกับไตรมาสเดียวกันของปีก่อนหน้า
+* กำไรสุทธิและกำไรต่อหุ้น (EPS) ยังคงแข็งแกร่งเนื่องจากยอดขายกลุ่มบริการที่ทำสถิติสูงสุดใหม่และการควบคุมต้นทุนการดำเนินงานอย่างมีประสิทธิภาพ
+* คณะกรรมการบริหารของบริษัทได้อนุมัติโครงการซื้อหุ้นคืนและประกาศจ่ายเงินปันผลรายไตรมาสตามแผนการจัดสรรเงินทุนปกติ
+
+## 4. Bull case / Bear case
+### Bull case (กรณีขาขึ้น)
+* **Branding & Switching Costs (ตามแนวคิด Helmer's 7 Powers):** ความแข็งแกร่งของแบรนด์ Apple ทำให้ผู้บริโภคยอมรับการจ่ายราคาพรีเมียม (Premium price) ประกอบกับต้นทุนในการย้ายค่าย (Switching Costs) ที่สูงมากเนื่องจากข้อมูล บริการ และแอปพลิเคชันทั้งหมดผูกติดอยู่กับระบบนิเวศ iOS ทำให้ผู้ใช้ยากที่จะเปลี่ยนไปใช้ระบบปฏิบัติการอื่น
+* **Network Economies:** App Store ทำหน้าที่เป็นแพลตฟอร์มแบบสองด้าน (Two-sided platform) ที่เชื่อมต่อและสร้างมูลค่าระหว่างนักพัฒนาซอฟต์แวร์และผู้ใช้งาน ยิ่งมีแอปพลิเคชันที่หลากหลายและมีคุณภาพ ผู้ใช้งานก็ยิ่งเข้ามาใช้งานมากขึ้น ซึ่งช่วยเพิ่มมูลค่าให้แก่แพลตฟอร์มอย่างต่อเนื่อง
+
+### Bear case (กรณีขาลง)
+* **ความเสี่ยงทางกฎหมายและข้อกำกับดูแลผูกขาด:** การฟ้องร้องและมาตรการตรวจสอบจากหน่วยงานกำกับดูแลของรัฐบาล เช่น กระทรวงยุติธรรมสหรัฐฯ (DOJ) และสหภาพยุโรป (EU) เกี่ยวกับพฤติกรรมผูกขาดและการเก็บค่าธรรมเนียม App Store ที่สูงเกินไป ซึ่งอาจบีบให้ Apple ต้องเปิดระบบนิเวศให้คู่แข่ง หรือลดค่าธรรมเนียมลง ซึ่งจะกระทบต่ออัตรากำไรของกลุ่มบริการโดยตรง
+* **การพึ่งพิงห่วงโซ่อุปทานและการกระจุกตัวของฐานผลิต:** แม้บริษัทจะพยายามกระจายฐานการประกอบเครื่องไปยังอินเดียและเวียดนามมากขึ้น แต่การผลิตฮาร์ดแวร์และชิ้นส่วนสำคัญส่วนใหญ่ยังคงพึ่งพาโรงงานในประเทศจีนและไต้หวัน ซึ่งมีความเสี่ยงเชิงภูมิรัฐศาสตร์หากเกิดความตึงเครียดทางการค้าระหว่างประเทศ
+
+## 5. Kill conditions
+* อัตรากำไรขั้นต้น (Gross Margin) ของกลุ่มบริการ (Services) ลดลงต่อเนื่องกันมากกว่า 3 ไตรมาส ซึ่งสะท้อนถึงการสูญเสียอำนาจการกำหนดราคาหรือผลกระทบทางกฎหมายที่รุนแรง
+* มีการบังคับใช้กฎหมายระดับโลกที่ห้ามไม่ให้ Apple บังคับใช้ระบบการชำระเงินของตนเอง (In-App Purchase) บน App Store ทั่วโลกสำเร็จ ซึ่งจะทำลายโครงสร้างรายได้และอัตรากำไรสำคัญของธุรกิจกลุ่มบริการไปอย่างถาวร
+* ยอดผู้ใช้งานที่เปิดใช้งานอุปกรณ์อยู่ (Active Installed Base) ทั่วโลกปรับตัวลดลงติดต่อกันอย่างมีนัยสำคัญ ซึ่งส่งสัญญาณว่าความแข็งแกร่งของแบรนด์เริ่มเสื่อมถอยลงและลูกค้าเริ่มหลั่งไหลออกจากระบบนิเวศ iOS
+
+## 6. What to ask before owning it
+1. มาตรการทางกฎหมายและการดำเนินคดีผูกขาด (Antitrust) ในยุโรปและสหรัฐฯ จะส่งผลกระทบต่อโครงสร้างรายได้และอัตรากำไรในธุรกิจกลุ่มบริการ (Services) ของ Apple มากน้อยเพียงใด?
+2. การผสานระบบปัญญาประดิษฐ์ (เช่น Apple Intelligence) เข้ากับอุปกรณ์จะสามารถกระตุ้นรอบการอัปเกรดเครื่องใหม่ (Upgrade cycle) ของผู้ใช้งานได้ยาวนานและคุ้มค่ากับการลงทุนด้านเทคโนโลยีหรือไม่?
+3. ความเสี่ยงเชิงภูมิรัฐศาสตร์ที่เกี่ยวข้องกับฐานการผลิตในจีนและไต้หวันจะสามารถบรรเทาลงได้รวดเร็วเพียงใดผ่านกลยุทธ์การกระจายห่วงโซ่อุปทานไปยังอินเดียและเวียดนาม?
+4. ราคาหุ้นปัจจุบันที่ซื้อขายในระดับพรีเมียม (Premium valuation) เมื่อเทียบกับอดีตมีความสมเหตุสมผลหรือไม่เมื่อเทียบกับอัตราการเติบโตของกำไรในอนาคตที่อาจชะลอตัวลง?`
+      },
+      {
+        ticker: "AAP",
+        companyName: "Advance Auto Parts, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1",
+        badgeColor: "#38bdf8",
+        snapshot: "Advance Auto Parts, Inc. (AAP) เป็นหนึ่งในผู้ให้บริการและจัดจำหน่ายชิ้นส่วนอะไหล่ อุปกรณ์เสริม แบตเตอรี่ และผลิตภัณฑ์ซ่อมบำรุงยานยนต์รายใหญ่ในอเมริกาเหนือ...",
+        markdown: `# Advance Auto Parts, Inc. (AAP) - Research Brief
+
+## What the company does
+Advance Auto Parts, Inc. (AAP) เป็นหนึ่งในผู้ให้บริการและจัดจำหน่ายชิ้นส่วนอะไหล่ อุปกรณ์เสริม แบตเตอรี่ และผลิตภัณฑ์ซ่อมบำรุงยานยนต์รายใหญ่ในอเมริกาเหนือ โดยให้บริการทั้งกลุ่มลูกค้าทั่วไปที่ลงมือซ่อมแซมรถยนต์ด้วยตนเอง (DIY - Do-It-Yourself) และกลุ่มช่างซ่อมรถยนต์มืออาชีพ (Professional) ผ่านเครือข่ายร้านค้าปลีกและสาขาภายใต้แบรนด์ Advance Auto Parts, Carquest และ Worldpac
+
+## Latest earnings
+* จากผลประกอบการล่าสุดในไตรมาสที่ 1 ปี 2026 (ประกาศ ณ วันที่ 21 พฤษภาคม 2026) บริษัทมียอดขายสุทธิรวมอยู่ที่ 2.61 พันล้านดอลลาร์สหรัฐ เติบโตขึ้นประมาณ 1.2% เมื่อเทียบกับช่วงเดียวกันของปีก่อน และสูงกว่าคาดการณ์ของนักวิเคราะห์
+* ยอดขายสาขาเดิม (Comparable Store Sales) ขยายตัวเพิ่มขึ้นถึง 3.5% ซึ่งถือเป็นการทำผลงานเติบโตที่แข็งแกร่งที่สุดในรอบ 5 ปีของบริษัท
+* กำไรต่อหุ้นปรับปรุง (Adjusted EPS) รายงานอยู่ที่ 0.77 ดอลลาร์สหรัฐต่อหุ้น เอาชนะตัวเลขคาดการณ์เฉลี่ยของตลาดที่ 0.39 ดอลลาร์สหรัฐได้อย่างมาก และฟื้นตัวขึ้นจากภาวะขาดทุน 0.22 ดอลลาร์สหรัฐต่อหุ้นในไตรมาสที่ 1 ปี 2025
+* อัตรากำไรขั้นต้น (Gross Margin) ขยายตัวเพิ่มขึ้นเป็น 45.1% (เพิ่มขึ้นจาก 42.9% ในไตรมาสเดียวกันของปีก่อน) และอัตรากำไรจากการดำเนินงานปรับปรุงแล้ว (Adjusted Operating Margin) เพิ่มขึ้น 410 basis points เป็น 3.8%
+* บริษัทได้ยืนยันเป้าหมายผลประกอบการตลอดปี 2026 (Guidance) โดยคาดการณ์ยอดขายสุทธิทั้งปีไว้ที่ประมาณ 8.5 พันล้านดอลลาร์สหรัฐ และคาดว่ายอดขายสาขาเดิมจะเติบโตอยู่ในช่วง 1% ถึง 2%
+
+## Bull case / Bear case
+### Bull case (กรณีขาขึ้น)
+* **การฟื้นตัวที่แข็งแกร่งของมาร์จิ้น:** การขยายตัวของอัตรากำไรขั้นต้นและอัตรากำไรจากการดำเนินงานในไตรมาสนี้ สะท้อนว่ามาตรการปรับปรุงประสิทธิภาพร้านค้าและการบริหารต้นทุนของฝ่ายบริหารชุดใหม่เริ่มส่งผลบวกอย่างเป็นรูปธรรม
+* **อุตสาหกรรมที่มีภูมิต้านทานสูง:** ธุรกิจอะไหล่ยนต์ได้รับประโยชน์จากสภาวะเศรษฐกิจผันผวน เนื่องจากผู้บริโภคมักเลือกซ่อมแซมรถคันเดิมแทนการซื้อรถใหม่ ประกอบกับอายุเฉลี่ยของยานพาหนะบนท้องถนนในปัจจุบันที่เพิ่มสูงขึ้น
+* **โอกาสในการขยายตลาดกลุ่มช่างอาชีพ:** ศักยภาพการขยายส่วนแบ่งตลาดในกลุ่มลูกค้าช่างซ่อมมืออาชีพ (Professional Segment) ซึ่งมีปริมาณความต้องการและยอดซื้อต่อครั้งที่สูงและสม่ำเสมอ
+
+### Bear case (กรณีขาลง)
+* **การแข่งขันที่รุนแรงมาก:** AAP ต้องเผชิญกับคู่แข่งในอุตสาหกรรมเดียวกันที่แข็งแกร่งและมีประสิทธิภาพสูงมากอย่าง AutoZone (AZO) และ O'Reilly Automotive (ORLY) ซึ่งมีอัตราการทำกำไรที่สม่ำเสมอกว่า
+* **ความเสี่ยงในระยะยาวจากรถยนต์ไฟฟ้า (EV):** ในระยะยาว รถยนต์ไฟฟ้ามีชิ้นส่วนเคลื่อนไหวและต้องการการบำรุงรักษาเชิงกลไกน้อยกว่ารถยนต์ใช้น้ำมันแบบเดิม ซึ่งอาจส่งผลกระทบต่อความต้องการสินค้าอะไหล่ดั้งเดิม
+* **ความอ่อนไหวต่อค่าแรงและห่วงโซ่อุปทาน:** ต้นทุนการดำเนินงานของร้านค้าที่กระจายอยู่ทั่วประเทศมีความอ่อนไหวต่ออัตราค่าแรงขั้นต่ำและต้นทุนค่าขนส่ง ซึ่งอาจกดดันความสามารถในการทำกำไรหากไม่สามารถผลักภาระต้นทุนไปยังผู้บริโภคได้ทั้งหมด
+
+## What to ask before owning it
+1. คุณคิดว่าการฟื้นตัวที่แข็งแกร่งในไตรมาสแรกของปี 2026 นี้เป็นแนวโน้มการเติบโตที่ยั่งยืนในระยะยาวจากการปรับโครงสร้างสำเร็จ หรือเป็นเพียงผลงานระยะสั้นจากการปรับปรุงระบบบางส่วน?
+2. เมื่อเทียบกับคู่แข่งระดับผู้นำอุตสาหกรรมอย่าง O'Reilly และ AutoZone แล้ว Advance Auto Parts มีจุดแข็งในการแข่งขันด้านใดที่จะช่วยรักษาฐานลูกค้าและแย่งชิงส่วนแบ่งตลาดกลับมาได้?
+3. คุณมีความคิดเห็นอย่างไรเกี่ยวกับการเปลี่ยนผ่านของโลกไปสู่ยานยนต์ไฟฟ้า (EV) ซึ่งอาจลดความจำเป็นในการเปลี่ยนชิ้นส่วนเครื่องยนต์กลไกในระยะยาว?
+4. แผนการเพิ่มประสิทธิภาพร้านค้าและลดขนาดสาขาที่ไม่ทำกำไรของบริษัท จะส่งผลกระทบต่อรายได้โดยรวมและความสามารถในการเข้าถึงลูกค้าในระยะสั้นอย่างไร?`
+      },
+      {
+        ticker: "APP",
+        companyName: "AppLovin Corporation",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1",
+        badgeColor: "#10b981",
+        snapshot: "AppLovin Corporation (APP) เป็นบริษัทเทคโนโลยีโฆษณาดิจิทัลชั้นนำระดับโลก ที่เน้นการให้บริการแพลตฟอร์มการตลาดและการเติบโตที่ขับเคลื่อนด้วยปัญญาประดิษฐ์ (AI)...",
+        markdown: `# AppLovin Corporation (APP) - Research Brief
+
+## What the company does
+AppLovin Corporation (APP) เป็นบริษัทเทคโนโลยีโฆษณาดิจิทัลชั้นนำระดับโลก ที่เน้นการให้บริการแพลตฟอร์มการตลาดและการเติบโตที่ขับเคลื่อนด้วยปัญญาประดิษฐ์ (AI) เพื่อช่วยให้นักพัฒนาแอปพลิเคชันมือถือสามารถโฆษณา เพิ่มรายได้ และขยายการเติบโตของแอปพลิเคชันของตนได้อย่างมีประสิทธิภาพ โดยมีโซลูชันหลักที่เป็นผู้นำตลาดอย่าง AppDiscovery (สำหรับจับคู่โฆษณา) และ MAX (สำหรับจัดการพื้นที่โฆษณาในแอปผ่านระบบประมูลอัจฉริยะ) ตลอดจนเครื่องมือการวิเคราะห์และวัดผลอย่าง Adjust
+
+## Latest earnings
+* จากผลประกอบการล่าสุดในไตรมาสที่ 1 ปี 2026 (ประกาศ ณ วันที่ 6 พฤษภาคม 2026) AppLovin รายงานรายได้รวมอยู่ที่ 1.84 พันล้านดอลลาร์สหรัฐ เติบโตขึ้นอย่างโดดเด่นถึง 58.9% เมื่อเทียบกับช่วงเดียวกันของปีก่อน และสูงกว่าความคาดหมายของนักวิเคราะห์ที่ประเมินไว้ 1.77 พันล้านดอลลาร์
+* มีกำไรต่อหุ้นปรับลด (Diluted EPS) อยู่ที่ 3.56 ดอลลาร์สหรัฐ แข็งแกร่งกว่าตัวเลขคาดการณ์ของนักวิเคราะห์ที่เฉลี่ย 3.44 ดอลลาร์สหรัฐ
+* ปัจจัยขับเคลื่อนการเติบโตมาจากประสิทธิภาพอันยอดเยี่ยมของเอนจินเทคโนโลยี AI ตัวใหม่ในการแนะนำและจัดสรรโฆษณา ซึ่งช่วยกระตุ้นยอดขายและการสร้างรายได้ให้กับนักพัฒนาเกมและแอปพลิเคชัน รวมถึงแนวโน้มเชิงบวกจากการเริ่มขยายเทคโนโลยีการโฆษณาเข้าสู่หมวดหมู่ร้านค้าอีคอมเมิร์ซ (E-commerce)
+* ในไตรมาสที่ 4 ปี 2025 (ประกาศเมื่อเดือนกุมภาพันธ์ 2026) บริษัททำรายได้ 1.66 พันล้านดอลลาร์สหรัฐ (เพิ่มขึ้น 66% YoY) และมีกำไรสุทธิรวมตลอดทั้งปี 2025 สูงถึง 3.33 พันล้านดอลลาร์ จากรายได้ทั้งปีที่ 5.48 พันล้านดอลลาร์สหรัฐ
+
+## Bull case / Bear case
+### Bull case (กรณีขาขึ้น)
+* **ความเป็นผู้นำด้านเทคโนโลยี AI สำหรับโฆษณา:** ระบบการแนะนำโฆษณาที่ปรับปรุงด้วย AI ของบริษัท มีประสิทธิภาพและแม่นยำสูงมาก ช่วยดึงดูดเม็ดเงินโฆษณาและส่งผลให้อัตราการเติบโตของกำไรเร่งตัวขึ้นอย่างก้าวกระโดด
+* **การขยายตัวเข้าสู่ตลาดใหม่:** ความพยายามในการบุกเบิกตลาดโฆษณาด้านอีคอมเมิร์ซ และบริการ Connected TV (ผ่านแพลตฟอร์ม Wurl) มีศักยภาพสูงในการสร้างแหล่งรายได้ใหม่ และลดการพึ่งพากลุ่มอุตสาหกรรมเกมมือถือเพียงอย่างเดียว
+* **การประหยัดจากขนาด (Scale Benefits):** แพลตฟอร์ม MAX ทำหน้าที่เป็นตัวกลางประมูลโฆษณาในแอป (In-app bidding) รายใหญ่ที่สุดรายหนึ่ง ซึ่งมี Network Effect ที่แข็งแกร่ง ยิ่งมีผู้ใช้มากยิ่งเพิ่มความคุ้มค่าและดึงดูดผู้ซื้อโฆษณาเข้ามามากยิ่งขึ้น
+
+### Bear case (กรณีขาลง)
+* **ความอ่อนไหวต่อกฎความเป็นส่วนตัวทางระบบปฏิบัติการ:** ธุรกิจยังคงพึ่งพาการเข้าถึงข้อมูลและแพลตฟอร์มระบบปฏิบัติการ iOS (Apple) และ Android (Google) หากมีการปรับเปลี่ยนมาตรการความเป็นส่วนตัวของข้อมูลผู้ใช้อีกครั้ง อาจส่งผลต่อประสิทธิภาพการยิงโฆษณาเจาะกลุ่มเป้าหมาย
+* **ความเสี่ยงจากการพึ่งพาอุตสาหกรรมเกมมือถือ:** แม้จะเริ่มขยายขอบเขตการทำงาน แต่รายได้ส่วนใหญ่ยังกระจุกตัวอยู่ในภาคเกมมือถือ หากตลาดเกมมือถือเกิดการชะลอตัวลง ก็จะส่งผลกระทบต่อรายได้โฆษณาของบริษัทโดยตรง
+* **การประเมินราคาหุ้นที่สะท้อนคาดการณ์ที่สูงมาก:** หลังผลงานการเติบโตที่ร้อนแรง ราคาหุ้นได้สะท้อนความคาดหวังในแง่ดีไปอย่างมาก หากเกิดการชะลอตัวของผลประกอบการแม้เพียงเล็กน้อยในอนาคต อาจเกิดแรงเทขายหุ้นได้รุนแรง
+
+## What to ask before owning it
+1. คุณคิดว่าความได้เปรียบทางเทคโนโลยี AI ในเอนจินการโฆษณาของ AppLovin จะยังคงรักษาขีดความสามารถการแข่งขันที่เหนือกว่าคู่แข่งรายอื่น ๆ ในระยะยาวและรักษาระดับมาร์จิ้นที่สูงนี้ไว้ได้หรือไม่?
+2. คุณมั่นใจเพียงใดว่ากลยุทธ์การขยายตัวเข้าสู่ตลาดโฆษณาประเภท E-commerce และ Connected TV จะประสบความสำเร็จจนสร้างเสารายได้หลักเพิ่มขึ้นมาได้ตามที่ฝ่ายบริหารคาดหวัง?
+3. คุณคิดว่าความผันผวนหรือมาตรการการควบคุมสิทธิ์ความเป็นส่วนตัว (User Privacy) จาก Apple และ Google ในอนาคตจะยังคงเป็นอุปสรรคสำคัญที่พร้อมคุกคามประสิทธิภาพระบบโฆษณาของบริษัทหรือไม่?
+4. หุ้นตัวนี้มีการเติบโตที่พุ่งทะยานอย่างรวดเร็ว คุณมีความพร้อมรับมือกับความผันผวนและความคาดหวังที่สูงมากจากนักลงทุนในตลาดได้มากน้อยเพียงใด?`
+      },
+      {
+        ticker: "TSLA",
+        companyName: "Tesla, Inc.",
+        type: "latest",
+        date: "2026-05-21",
+        version: "v1",
+        badgeColor: "#ef4444",
+        snapshot: "Tesla, Inc. เป็นบริษัทชั้นนำด้านเทคโนโลยีและพลังงานสะอาดระดับโลกที่โดดเด่นในการออกแบบและผลิตยานยนต์ไฟฟ้า (EV) ระบบผลิตและจัดเก็บพลังงานไฟฟ้า...",
+        markdown: `# Tesla, Inc. (TSLA) - Research Brief
+
+## What the company does
+Tesla, Inc. เป็นบริษัทชั้นนำด้านเทคโนโลยีและพลังงานสะอาดระดับโลกที่โดดเด่นในการออกแบบและผลิตยานยนต์ไฟฟ้า (EV) ระบบผลิตและจัดเก็บพลังงานไฟฟ้า รวมถึงโซลูชันแผงโซลาร์เซลล์ นอกจากนี้ยังเป็นผู้นำในการพัฒนาเทคโนโลยีปัญญาประดิษฐ์ (AI) ซอฟต์แวร์ขับเคลื่อนอัตโนมัติ (Full Self-Driving) และหุ่นยนต์ฮิวแมนนอยด์ (Optimus) เพื่อเร่งการขับเคลื่อนของโลกสู่พลังงานที่ยั่งยืน
+
+## Latest earnings
+* จากผลประกอบการล่าสุดในไตรมาสที่ 1 ปี 2026 (รายงาน ณ วันที่ 22 เมษายน 2026) Tesla รายงานรายได้รวมที่ 22.39 พันล้านดอลลาร์สหรัฐ เติบโตขึ้น 16% เมื่อเทียบกับช่วงเดียวกันของปีก่อน
+* กำไรต่อหุ้น (EPS) แบบ Non-GAAP อยู่ที่ 0.41 ดอลลาร์สหรัฐ สูงกว่าที่นักวิเคราะห์คาดการณ์ไว้ที่ 0.36 ดอลลาร์สหรัฐ
+* อัตรากำไรขั้นต้นรวม (Gross Margin) เพิ่มขึ้นเป็น 21.1% โดยมีอัตรากำไรขั้นต้นของยานยนต์ที่ไม่รวมค่าคาร์บอนเครดิตปรับตัวดีขึ้นเป็น 19.2% (จาก 17.9% ในไตรมาสที่ 4 ปี 2025)
+* ยอดส่งมอบรถยนต์ไฟฟ้าในไตรมาสนี้อยู่ที่ 358,023 คัน โดยมีการผลิตรวม 408,386 คัน และได้เริ่มสายการผลิตสำหรับ Cybercab และ Semi อย่างเป็นทางการแล้ว
+* ธุรกิจการจัดเก็บพลังงาน (Energy Storage) ทำสถิติใหม่อย่างโดดเด่นด้วยอัตรากำไรขั้นต้นสูงถึง 39.5% และมีการติดตั้งระบบกักเก็บพลังงานไปทั้งหมด 8.8 GWh ในไตรมาสนี้
+
+## Bull case / Bear case
+### Bull case (กรณีขาขึ้น)
+* **การเติบโตอย่างก้าวกระโดดของธุรกิจพลังงาน:** กลุ่มธุรกิจ Energy Storage มีอัตรากำไรขั้นต้นที่สูงเกือบ 40% และมีแนวโน้มเติบโตอย่างต่อเนื่องเพื่อรองรับความต้องการระบบกริดพลังงานสะอาดและ Data Center ทั่วโลก
+* **การเปลี่ยนผ่านสู่บริษัท AI และหุ่นยนต์:** การเริ่มต้นผลิต Cybercab และแผนการให้บริการ Robotaxi รวมถึงการพัฒนา FSD และ Optimus อย่างต่อเนื่อง มีศักยภาพที่จะเปลี่ยน Tesla ให้เป็นผู้ให้บริการแพลตฟอร์มเทคโนโลยีที่มีมูลค่าและอัตรากำไรสูงมาก
+* **สถานะทางการเงินที่แข็งแกร่ง:** มีฐานะการเงินและกระแสเงินสดที่เอื้อต่อการลงทุนเชิงรุก โดยตั้งงบลงทุน (CapEx) มากกว่า 25 พันล้านดอลลาร์สหรัฐในปี 2026 เพื่อขยายโรงงานและโครงสร้างพื้นฐาน AI
+
+### Bear case (กรณีขาลง)
+* **การแข่งขันในตลาด EV ที่รุนแรงขึ้น:** สงครามราคาและการเติบโตของคู่แข่งอย่างรวดเร็ว (โดยเฉพาะจากแบรนด์จีน) อาจส่งผลกระทบต่อส่วนแบ่งทางการตลาดและกดดันอัตรากำไรของธุรกิจยานยนต์
+* **ความเสี่ยงในการพัฒนาเทคโนโลยีขั้นสูง:** ความสำเร็จและกรอบเวลาการเปิดใช้งานจริงของ FSD และหุ่นยนต์ Optimus ยังคงมีความไม่แน่นอนสูง หากล่าช้ากว่าที่คาดอาจสร้างความผิดหวังให้กับตลาดและกดดันราคาหุ้น
+* **มูลค่าหุ้นที่สะท้อนความคาดหวังสูง (High Valuation):** หุ้น TSLA ซื้อขายกันที่ระดับ Multiple (เช่น P/E ratio) ที่สูงมากเมื่อเทียบกับบริษัทผลิตรถยนต์ทั่วไป ซึ่งหมายความว่ามีความเสี่ยงสูงหากผลการดำเนินงานหรือนวัตกรรมไม่ได้เติบโตรวดเร็วตามคาด
+
+## What to ask before owning it
+1. คุณเชื่อมั่นว่า Tesla เป็นบริษัทด้านเทคโนโลยีปัญญาประดิษฐ์และหุ่นยนต์ (AI & Robotics) ที่มีศักยภาพสูงจริง ๆ หรือมองว่าเป็นเพียงบริษัทผลิตรถยนต์ไฟฟ้า? (เพราะราคาหุ้นปัจจุบันสะท้อนมูลค่าความเป็นบริษัทเทคโนโลยีอย่างมาก)
+2. คุณพร้อมรับมือกับความผันผวนที่รุนแรงของราคาหุ้น ซึ่งมักตอบสนองต่อกระแสข่าวและพฤติกรรมหรือการประกาศของ CEO อย่าง Elon Musk หรือไม่?
+3. คุณคิดว่าเทคโนโลยีขับเคลื่อนอัตโนมัติเต็มรูปแบบ (FSD) และบริการ Robotaxi (เช่น Cybercab) จะสามารถให้บริการจริงในเชิงพาณิชย์และได้รับการอนุมัติทางกฎหมายในวงกว้างได้เร็วแค่ไหน?
+4. คุณคิดว่าธุรกิจการจัดเก็บพลังงาน (Energy Storage) จะเติบโตอย่างมั่นคงจนสามารถกลายเป็นเสาหลักสร้างรายได้และกำไรที่สำคัญเคียงคู่กับธุรกิจยานยนต์ได้จริงหรือไม่?`
+      }
+    ];
+
+    // Simple Dynamic Markdown Parser in JS
+    function parseMarkdown(md) {
+      if (!md) return "";
+      
+      const lines = md.split('\n');
+      let html = "";
+      let inList = false;
+      let inBlockquote = false;
+
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+
+        // Close blockquote if empty line
+        if (line === "" && inBlockquote) {
+          html += "</div></div>";
+          inBlockquote = false;
+          continue;
+        }
+
+        // Close list if line does not start with bullet
+        if (!line.startsWith('-') && !line.startsWith('*') && !/^\d+\.\s+/.test(line) && inList) {
+          html += "</ul>";
+          inList = false;
+        }
+
+        // Handle Horizontal rule
+        if (line === "---") {
+          html += "<hr>";
+          continue;
+        }
+
+        // Handle GitHub alerts or standard blockquotes
+        if (line.startsWith('>')) {
+          let content = line.substring(1).trim();
+          if (!inBlockquote) {
+            // Check alert type
+            let alertClass = "";
+            let alertTitle = "NOTE";
+            if (content.startsWith('[!NOTE]')) {
+              alertClass = "note";
+              alertTitle = "Note";
+              content = content.replace('[!NOTE]', '').trim();
+            } else if (content.startsWith('[!IMPORTANT]') || content.startsWith('[!WARNING]') || content.startsWith('[!CAUTION]')) {
+              alertClass = "warning";
+              alertTitle = "Warning";
+              content = content.replace(/\[!(IMPORTANT|WARNING|CAUTION)\]/, '').trim();
+            }
+            
+            if (alertClass) {
+              html += `<div class="alert-box ${alertClass}"><div class="alert-box-title">${alertTitle}</div><div class="alert-box-content">`;
+            } else {
+              html += `<blockquote>`;
+            }
+            inBlockquote = true;
+          }
+          
+          if (content) {
+            html += parseInlineMarkdown(content) + " ";
+          }
+          continue;
+        } else if (inBlockquote) {
+          // If blockquote was active but line does not start with >, close it
+          html += "</div></div>";
+          inBlockquote = false;
+        }
+
+        // Handle Headings
+        if (line.startsWith('###')) {
+          html += `<h3>${parseInlineMarkdown(line.substring(3).trim())}</h3>`;
+        } else if (line.startsWith('##')) {
+          html += `<h2>${parseInlineMarkdown(line.substring(2).trim())}</h2>`;
+        } else if (line.startsWith('#')) {
+          html += `<h1>${parseInlineMarkdown(line.substring(1).trim())}</h1>`;
+        }
+        // Handle Bullet Lists
+        else if (line.startsWith('-') || line.startsWith('*')) {
+          if (!inList) {
+            html += "<ul>";
+            inList = true;
+          }
+          let cleanContent = line.substring(1).trim();
+          html += `<li>${parseInlineMarkdown(cleanContent)}</li>`;
+        }
+        // Handle Numbered Lists
+        else if (/^\d+\.\s+/.test(line)) {
+          if (!inList) {
+            html += "<ul>";
+            inList = true;
+          }
+          let cleanContent = line.replace(/^\d+\.\s+/, '').trim();
+          html += `<li>${parseInlineMarkdown(cleanContent)}</li>`;
+        }
+        // Handle normal paragraphs
+        else if (line !== "") {
+          html += `<p>${parseInlineMarkdown(line)}</p>`;
+        }
+      }
+
+      // Cleanup unclosed elements
+      if (inList) html += "</ul>";
+      if (inBlockquote) html += "</div></div>";
+
+      return html;
+    }
+
+    // Parse inline bold, links, etc.
+    function parseInlineMarkdown(text) {
+      if (!text) return "";
+      
+      // Escape HTML characters to protect markup
+      let safe = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // Parse bold **text**
+      safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      // Parse links [text](url)
+      safe = safe.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="glow-link">$1</a>');
+
+      return safe;
+    }
+
+    // DOM Elements
+    const briefsGrid = document.getElementById('briefsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const detailOverlay = document.getElementById('detailOverlay');
+    const detailContainer = document.getElementById('detailContainer');
+    const closeBtn = document.getElementById('closeBtn');
+    
+    const detailTicker = document.getElementById('detailTicker');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailVersion = document.getElementById('detailVersion');
+    const detailDate = document.getElementById('detailDate');
+    const detailContent = document.getElementById('detailContent');
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // Render Grid Cards
+    function renderCards() {
+      briefsGrid.innerHTML = '';
+      
+      const filtered = briefsData.filter(brief => {
+        // Tab Filter
+        if (currentFilter === 'latest' && brief.type !== 'latest') return false;
+        if (currentFilter === 'archived' && brief.type !== 'archived') return false;
+        
+        // Search Query
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          const matchesTicker = brief.ticker.toLowerCase().includes(query);
+          const matchesName = brief.companyName.toLowerCase().includes(query);
+          const matchesSnapshot = brief.snapshot.toLowerCase().includes(query);
+          return matchesTicker || matchesName || matchesSnapshot;
+        }
+        
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        briefsGrid.innerHTML = `<div class="no-results">ไม่พบรายงานหุ้นที่ตรงกับการค้นหาของคุณ ลองใช้คำค้นอื่นดูนะ</div>`;
+        return;
+      }
+
+      filtered.forEach((brief, idx) => {
+        const card = document.createElement('div');
+        card.className = 'brief-card';
+        card.style.setProperty('--badge-color', brief.badgeColor);
+        card.style.animationDelay = `${idx * 0.05}s`;
+        
+        card.innerHTML = `
+          <div class="card-header">
+            <div class="card-ticker-area">
+              <span class="card-ticker">${brief.ticker}</span>
+              <span class="card-badge" style="color: ${brief.badgeColor}; border-color: ${brief.badgeColor}25; background: ${brief.badgeColor}08">${brief.version}</span>
+            </div>
+            <span class="card-date">${brief.date}</span>
+          </div>
+          <h4 class="card-company-name">${brief.companyName}</h4>
+          <p class="card-preview">${brief.snapshot}</p>
+          <div class="card-footer">
+            <span class="read-more" style="color: ${brief.badgeColor}">
+              เปิดบทวิเคราะห์แบบเต็ม
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        `;
+        
+        card.addEventListener('click', () => openDetail(brief));
+        briefsGrid.appendChild(card);
+      });
+    }
+
+    // Open Detail Modal
+    function openDetail(brief) {
+      detailTicker.textContent = brief.ticker;
+      detailTicker.style.borderColor = brief.badgeColor + "25";
+      detailTicker.style.color = brief.badgeColor;
+      
+      detailTitle.textContent = brief.companyName;
+      detailVersion.textContent = `เวอร์ชัน: ${brief.version}`;
+      detailDate.textContent = `แก้ไขล่าสุด: ${brief.date}`;
+      
+      // Update custom theme color for detailed view
+      detailContainer.style.setProperty('--detail-accent', brief.badgeColor);
+      
+      // Render markdown to HTML
+      const parsedHTML = parseMarkdown(brief.markdown);
+      detailContent.innerHTML = parsedHTML;
+      
+      // Open modal with smooth transition
+      detailOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Stop body scrolling
+    }
+
+    // Close Detail Modal
+    function closeDetail() {
+      detailOverlay.classList.remove('active');
+      document.body.style.overflow = ''; // Restore body scrolling
+    }
+
+    // Event Listeners
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCards();
+    });
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.getAttribute('data-filter');
+        renderCards();
+      });
+    });
+
+    closeBtn.addEventListener('click', closeDetail);
+    
+    // Close on clicking outside the container
+    detailOverlay.addEventListener('click', (e) => {
+      if (e.target === detailOverlay) {
+        closeDetail();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && detailOverlay.classList.contains('active')) {
+        closeDetail();
+      }
+    });
+
+    // Initial Render
+    renderCards();
+  </script>
+</body>
+</html>
